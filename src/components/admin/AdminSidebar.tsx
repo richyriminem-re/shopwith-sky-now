@@ -155,8 +155,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className }) => {
     <aside 
       ref={sidebarRef}
       className={cn(
-        'flex flex-col h-screen bg-background border-r border-border transition-all duration-300 ease-in-out',
+        'fixed top-0 left-0 z-40 flex flex-col h-screen bg-background border-r border-border transition-all duration-300 ease-in-out',
         sidebarCollapsed ? 'w-16' : 'w-64',
+        // On mobile, hide when collapsed by translating off-screen
+        'lg:translate-x-0', // Always visible on desktop
+        sidebarCollapsed ? 'lg:w-16' : 'lg:w-64', // Desktop widths
+        sidebarCollapsed && 'max-lg:-translate-x-full', // Hide on mobile when collapsed
         className
       )}
     >
