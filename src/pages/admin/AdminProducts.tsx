@@ -131,16 +131,24 @@ const AdminProducts: React.FC = () => {
   ];
 
   const handleDeleteProduct = async (product: Product) => {
+    // Optimistic update: Remove product immediately
+    const originalProducts = filteredProducts;
+    setFilteredProducts(prev => prev.filter(p => p.id !== product.id));
+    
+    toast({
+      title: 'Product Deleted',
+      description: `${product.title} has been deleted successfully.`,
+    });
+
     try {
       await mockProductsAPI.deleteProduct(product.id);
+      // Refresh data to ensure consistency
       const updatedProducts = await mockProductsAPI.getProducts();
       setFilteredProducts(updatedProducts);
-      toast({
-        title: 'Product Deleted',
-        description: `${product.title} has been deleted successfully.`,
-      });
     } catch (error) {
       console.error('Delete product error:', error);
+      // Revert optimistic update on error
+      setFilteredProducts(originalProducts);
       toast({
         title: 'Delete Error',
         description: 'Failed to delete product. Please try again.',
@@ -191,17 +199,47 @@ const AdminProducts: React.FC = () => {
 
   const handleCreateProduct = async (data: CreateProductData) => {
     setIsSubmitting(true);
+    
+    // Create temporary product for optimistic update
+    const tempProduct: Product = {
+      id: `temp-${Date.now()}`,
+      title: data.title,
+      brand: data.brand,
+      description: data.description,
+      handle: data.title.toLowerCase().replace(/\s+/g, '-'),
+      images: data.images,
+      primaryCategory: data.primaryCategory as any,
+      subcategory: data.subcategory as any,
+      variants: data.variants.map(v => ({
+        id: `temp-variant-${Date.now()}-${Math.random()}`,
+        color: v.color,
+        size: v.size,
+        price: v.price,
+        comparePrice: v.comparePrice,
+        stock: v.stock,
+        sku: '',
+      })),
+    };
+
+    // Optimistic update: Add product immediately
+    setFilteredProducts(prev => [tempProduct, ...prev]);
+    setShowCreateModal(false);
+    
+    toast({
+      title: 'Product Created',
+      description: `${data.title} has been created successfully.`,
+    });
+
     try {
       const newProduct = await mockProductsAPI.createProduct(data);
-      const updatedProducts = await mockProductsAPI.getProducts();
-      setFilteredProducts(updatedProducts);
-      setShowCreateModal(false);
-      toast({
-        title: 'Product Created',
-        description: `${newProduct.title} has been created successfully.`,
-      });
+      // Replace temp product with real one
+      setFilteredProducts(prev => prev.map(p => 
+        p.id === tempProduct.id ? newProduct : p
+      ));
     } catch (error) {
       console.error('Create product error:', error);
+      // Revert optimistic update on error
+      setFilteredProducts(prev => prev.filter(p => p.id !== tempProduct.id));
       toast({
         title: 'Create Error',
         description: 'Failed to create product. Please try again.',
@@ -216,18 +254,53 @@ const AdminProducts: React.FC = () => {
     if (!editingProduct) return;
     
     setIsSubmitting(true);
+    
+    // Create updated product for optimistic update
+    const updatedProduct: Product = {
+      ...editingProduct,
+      title: data.title,
+      brand: data.brand,
+      description: data.description,
+      handle: data.title.toLowerCase().replace(/\s+/g, '-'),
+      images: data.images,
+      primaryCategory: data.primaryCategory as any,
+      subcategory: data.subcategory as any,
+      variants: data.variants.map((v, index) => ({
+        id: editingProduct.variants[index]?.id || `variant-${Date.now()}-${index}`,
+        color: v.color,
+        size: v.size,
+        price: v.price,
+        comparePrice: v.comparePrice,
+        stock: v.stock,
+        sku: editingProduct.variants[index]?.sku || '',
+      })),
+    };
+
+    // Store original for potential revert
+    const originalProducts = filteredProducts;
+    
+    // Optimistic update: Update product immediately
+    setFilteredProducts(prev => prev.map(p => 
+      p.id === editingProduct.id ? updatedProduct : p
+    ));
+    setEditingProduct(null);
+    
+    toast({
+      title: 'Product Updated',
+      description: `${data.title} has been updated successfully.`,
+    });
+
     try {
       const updateData: UpdateProductData = { ...data, id: editingProduct.id };
       await mockProductsAPI.updateProduct(updateData);
+      // Refresh data to ensure consistency
       const updatedProducts = await mockProductsAPI.getProducts();
       setFilteredProducts(updatedProducts);
-      setEditingProduct(null);
-      toast({
-        title: 'Product Updated',
-        description: `${data.title} has been updated successfully.`,
-      });
     } catch (error) {
       console.error('Update product error:', error);
+      // Revert optimistic update on error
+      setFilteredProducts(originalProducts);
+      setEditingProduct(editingProduct); // Reopen modal
       toast({
         title: 'Update Error',
         description: 'Failed to update product. Please try again.',
@@ -346,6 +419,18 @@ const AdminProducts: React.FC = () => {
             console.log('Page changed to:', page);
           },
         }}
+      />
+
+      {/* Create/Edit Modal */}
+      <ProductCreateEditModal
+        isOpen={showCreateModal || !!editingProduct}
+        onClose={() => {
+          setShowCreateModal(false);
+          setEditingProduct(null);
+        }}
+        product={editingProduct || undefined}
+        onSubmit={editingProduct ? handleEditProduct : handleCreateProduct}
+        isLoading={isSubmitting}
       />
     </div>
   );

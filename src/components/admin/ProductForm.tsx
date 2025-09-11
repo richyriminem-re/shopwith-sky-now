@@ -9,11 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Plus, Trash2, Save, RotateCcw } from 'lucide-react';
 import { PRIMARY_CATEGORIES, SUBCATEGORIES_BY_PRIMARY } from '@/data/categories';
 import type { Product } from '@/types';
 import { VariantEditor } from './VariantEditor';
 import { ImageUploader } from './ImageUploader';
+import { useFormPersistence } from '@/hooks/useFormPersistence';
+import { FormRecoveryDialog } from '@/components/forms/FormRecoveryDialog';
+import { useToast } from '@/hooks/use-toast';
 
 const productFormSchema = z.object({
   title: z.string().min(1, 'Product name is required'),
@@ -46,9 +49,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   onCancel,
   isLoading = false
 }) => {
+  const { toast } = useToast();
   const [isBasicOpen, setIsBasicOpen] = React.useState(true);
   const [isImagesOpen, setIsImagesOpen] = React.useState(true);
   const [isVariantsOpen, setIsVariantsOpen] = React.useState(true);
+  const [showRecoveryDialog, setShowRecoveryDialog] = React.useState(false);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productFormSchema),
@@ -82,19 +87,90 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     },
   });
 
+  // Form persistence with auto-save and recovery
+  const {
+    restoreData,
+    clearSavedData,
+    isRecoveryAvailable,
+    savedMetadata,
+    forceSave
+  } = useFormPersistence({
+    storageKey: product ? `product-edit-${product.id}` : 'product-create',
+    watch: ['title', 'brand', 'description', 'images', 'primaryCategory', 'subcategory', 'variants'],
+    form,
+    enabled: true,
+    formType: product ? 'Product Edit' : 'Product Creation',
+    autoCleanup: true,
+    expirationHours: 24,
+    encryptSensitiveFields: false,
+    onDataFound: () => {
+      setShowRecoveryDialog(true);
+    }
+  });
+
   const selectedCategory = form.watch('primaryCategory');
   const subcategoriesForSelected = selectedCategory ? SUBCATEGORIES_BY_PRIMARY[selectedCategory as keyof typeof SUBCATEGORIES_BY_PRIMARY] : [];
 
   const handleSubmit = async (data: ProductFormData) => {
     try {
       await onSubmit(data);
+      // Clear saved data on successful submission
+      clearSavedData();
+      toast({
+        title: 'Success',
+        description: `Product ${product ? 'updated' : 'created'} successfully!`,
+      });
     } catch (error) {
       console.error('Form submission error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save product. Please try again.',
+        variant: 'destructive',
+      });
     }
+  };
+
+  const handleRecoverData = async () => {
+    const success = await restoreData();
+    if (success) {
+      setShowRecoveryDialog(false);
+      toast({
+        title: 'Data Restored',
+        description: 'Your previous form data has been recovered.',
+      });
+    }
+  };
+
+  const handleDiscardData = () => {
+    clearSavedData();
+    setShowRecoveryDialog(false);
+    toast({
+      title: 'Data Discarded',
+      description: 'Previous form data has been cleared.',
+    });
+  };
+
+  const handleForceSave = async () => {
+    await forceSave();
+    toast({
+      title: 'Progress Saved',
+      description: 'Your form progress has been saved.',
+    });
   };
 
   return (
     <div className="space-y-4">
+      {/* Recovery Dialog */}
+      {savedMetadata && (
+        <FormRecoveryDialog
+          isOpen={showRecoveryDialog}
+          onClose={() => setShowRecoveryDialog(false)}
+          onRecover={handleRecoverData}
+          onDiscard={handleDiscardData}
+          savedData={savedMetadata}
+        />
+      )}
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           {/* Basic Information */}
@@ -288,6 +364,16 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               className="flex-1 sm:flex-none tap-target-md"
             >
               {isLoading ? 'Saving...' : product ? 'Update Product' : 'Create Product'}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleForceSave}
+              disabled={isLoading}
+              className="flex items-center gap-2 tap-target-md"
+            >
+              <Save className="h-4 w-4" />
+              Save Progress
             </Button>
             <Button
               type="button"
