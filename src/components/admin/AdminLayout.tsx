@@ -38,23 +38,26 @@ const AdminLayout: React.FC = () => {
       {/* Mobile Backdrop */}
       {isMobile && !sidebarCollapsed && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden transition-all duration-300"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-all duration-300"
           onClick={() => setSidebarCollapsed(true)}
         />
       )}
 
       {/* Sidebar */}
-      <AdminSidebar />
+      <div className={cn(
+        'transition-all duration-300 ease-in-out',
+        isMobile 
+          ? cn(
+              'fixed left-0 top-0 z-50 h-full',
+              sidebarCollapsed ? '-translate-x-full' : 'translate-x-0'
+            )
+          : 'relative'
+      )}>
+        <AdminSidebar />
+      </div>
 
       {/* Main Content */}
-      <div className={cn(
-        "flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-        isMobile 
-          ? "ml-0" 
-          : sidebarCollapsed 
-            ? "ml-16" 
-            : "ml-64"
-      )}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile Header */}
         {isMobile && (
           <TooltipProvider>
