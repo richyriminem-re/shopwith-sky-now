@@ -16,7 +16,7 @@ export const WhatsAppContact = ({
   variant = 'default',
   size = 'default'
 }: WhatsAppContactProps) => {
-  const whatsappNumber = "2348167741616";
+  const whatsappNumber = "2348112698594";
   
   const generateInquiryMessage = () => {
     let message = "Hello! I'm interested in ";

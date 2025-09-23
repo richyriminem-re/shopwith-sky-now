@@ -10,11 +10,11 @@ export const WhatsAppBusinessInfo = () => {
 
   const handleWhatsAppContact = () => {
     const message = encodeURIComponent("Hello! I'd like to know more about your products and services.");
-    window.open(`https://wa.me/2348167741616?text=${message}`, '_blank');
+    window.open(`https://wa.me/2348112698594?text=${message}`, '_blank');
   };
 
   const handleCall = () => {
-    window.open('tel:+2348167741616', '_self');
+    window.open('tel:+2348112698594', '_self');
   };
 
   return (

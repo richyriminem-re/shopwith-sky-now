@@ -95,7 +95,7 @@ export const WhatsAppOrderGenerator = ({
     return encodeURIComponent(message);
   }, [items, subtotal, shipping, discount, total, shippingOption, appliedPromoCodes, customerInfo]);
 
-  const whatsappNumber = "2348167741616"; // Your WhatsApp Business number
+  const whatsappNumber = "2348112698594"; // Your WhatsApp Business number
 
   const handleWhatsAppOrder = () => {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
