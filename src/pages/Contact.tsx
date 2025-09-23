@@ -40,8 +40,8 @@ const Contact = () => {
       availability: 'Mon-Fri 8AM-8PM EST',
       action: 'Call Now',
       highlight: false,
-      contact: '+234 801 234 5678',
-      onClick: () => window.open('tel:+2348012345678', '_self')
+      contact: '+234 811 269 8594',
+      onClick: () => window.open('tel:+2348112698594', '_self')
     },
     {
       icon: Mail,
@@ -50,8 +50,8 @@ const Contact = () => {
       availability: 'Response within 4 hours',
       action: 'Send Email',
       highlight: false,
-      contact: 'support@shopfashion.com',
-      onClick: () => window.open('mailto:support@shopfashion.com', '_blank')
+      contact: 'modupeolaceline@gmail.com',
+      onClick: () => window.open('mailto:modupeolaceline@gmail.com', '_blank')
     }
   ];
 
@@ -67,7 +67,7 @@ const Contact = () => {
     {
       name: 'Instagram',
       icon: 'fa-brands fa-instagram',
-      url: '#',
+      url: 'https://instagram.com/sho.pwithsky',
       color: 'text-[#E4405F]',
       hoverColor: 'hover:text-[#C13584]',
       bgHover: 'hover:bg-[#E4405F]/10'
@@ -75,7 +75,7 @@ const Contact = () => {
     {
       name: 'TikTok',
       icon: 'fa-brands fa-tiktok',
-      url: '#',
+      url: 'https://tiktok.com/@shopwithsky3',
       color: 'text-foreground',
       hoverColor: 'hover:text-foreground',
       bgHover: 'hover:bg-foreground/10'
@@ -222,6 +222,7 @@ const Contact = () => {
                         <h4 className="font-medium text-foreground mb-2">Address</h4>
                         <p className="text-muted-foreground leading-relaxed">
                           Shop With Sky<br />
+                          Akogun Street, Olodi Apapa<br />
                           Lagos, Nigeria
                         </p>
                       </div>

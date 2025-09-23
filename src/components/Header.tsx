@@ -43,13 +43,9 @@ const Header = () => {
 
         {/* Essential Icons */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <Link 
-            to="/account" 
-            className="neu-icon-button min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="My Account"
-          >
-            <User size={16} />
-          </Link>
+          <span className="md:hidden">
+            <ThemeToggle />
+          </span>
           
           <span className="hidden md:inline-flex">
             <ThemeToggle />

@@ -7,10 +7,10 @@ const CallBar = () => {
         <Phone size={14} className="text-neu-muted" />
         <span>CALL TO ORDER:</span>
         <a 
-          href="tel:09057775190" 
+          href="tel:+2348112698594" 
           className="text-primary hover:text-primary/80 transition-colors font-semibold"
         >
-          09057775190
+          +234 811 269 8594
         </a>
       </div>
     </div>

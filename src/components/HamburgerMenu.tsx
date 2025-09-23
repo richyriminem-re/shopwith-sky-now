@@ -104,7 +104,6 @@ const HamburgerMenu = ({ children, open, onOpenChange }: HamburgerMenuProps) => 
   };
 
   const quickLinks = [
-    { icon: Package, label: 'Orders', href: '/orders', onClick: handleOrdersNavigation },
     { icon: Heart, label: 'Wishlist', href: '/wishlist' },
     { icon: Bell, label: 'Notifications', href: '/notifications' },
   ];
@@ -144,33 +143,6 @@ const HamburgerMenu = ({ children, open, onOpenChange }: HamburgerMenuProps) => 
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto">
-            {/* User Section - At the very top */}
-            <div className="px-6 py-4 border-b border-border">
-              {isSignedIn ? (
-                <div className="flex items-center gap-3 p-3 neu-surface rounded-lg">
-                  <div className="neu-surface w-10 h-10 rounded-full flex items-center justify-center">
-                    <User size={18} className="text-neu-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-neu-primary">
-                      {user?.name || 'Welcome back!'}
-                    </p>
-                    <p className="text-xs text-neu-muted">
-                      {user?.email || 'View your profile'}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  to="/login"
-                  className="neu-pressable flex items-center gap-3 p-3 text-neu-primary hover:text-primary transition-colors"
-                  onClick={() => onOpenChange?.(false)}
-                >
-                  <LogIn size={18} />
-                  <span className="text-sm font-medium">Login / Sign Up</span>
-                </Link>
-              )}
-            </div>
 
             {/* OUR CATEGORIES Section */}
             <div className="px-6 py-4">
@@ -248,30 +220,15 @@ const HamburgerMenu = ({ children, open, onOpenChange }: HamburgerMenuProps) => 
               </h3>
               <div className="space-y-2">
                 {quickLinks.map((item) => (
-                  item.onClick ? (
-                    <button
-                      key={item.label}
-                      onClick={item.onClick}
-                      disabled={isPending}
-                      className="neu-pressable w-full flex items-center gap-3 p-3 text-neu-primary hover:text-primary transition-colors disabled:opacity-50"
-                    >
-                      <item.icon size={18} />
-                      <span className="text-sm font-medium">{item.label}</span>
-                      {isPending && item.label === 'Orders' && (
-                        <div className="ml-auto w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                      )}
-                    </button>
-                  ) : (
-                    <Link
-                      key={item.label}
-                      to={item.href}
-                      className="neu-pressable flex items-center gap-3 p-3 text-neu-primary hover:text-primary transition-colors"
-                      onClick={() => onOpenChange?.(false)}
-                    >
-                      <item.icon size={18} />
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </Link>
-                  )
+                  <Link
+                    key={item.label}
+                    to={item.href}
+                    className="neu-pressable flex items-center gap-3 p-3 text-neu-primary hover:text-primary transition-colors"
+                    onClick={() => onOpenChange?.(false)}
+                  >
+                    <item.icon size={18} />
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -12,9 +12,6 @@ const Footer = () => {
   }, {
     name: 'FAQ',
     path: '/faq'
-  }, {
-    name: 'Track Order',
-    path: '/orders'
   }];
   
   const companyLinks = [{
@@ -114,15 +111,15 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">+234 801 234 5678</span>
+                <span className="break-all">+234 811 269 8594</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">help@shopwithsky.com</span>
+                <span className="break-all">modupeolaceline@gmail.com</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span className="text-center sm:text-left">Lagos, Nigeria</span>
+                <span className="text-center sm:text-left">Akogun Street, Olodi Apapa. Lagos, Nigeria</span>
               </div>
             </div>
           </div>
@@ -198,14 +195,18 @@ const Footer = () => {
                   <i className="fa-brands fa-whatsapp text-base sm:text-lg text-[#25D366] hover:text-[#128C7E] transition-colors duration-300"></i>
                 </a>
                 <a 
-                  href="#" 
+                  href="https://instagram.com/sho.pwithsky" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
                   aria-label="Follow us on Instagram"
                 >
                   <i className="fa-brands fa-instagram text-base sm:text-lg text-[#E4405F] hover:text-[#C13584] transition-colors duration-300"></i>
                 </a>
                 <a 
-                  href="#" 
+                  href="https://tiktok.com/@shopwithsky3" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
                   aria-label="Follow us on TikTok"
                 >
