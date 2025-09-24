@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, MessageCircle, Clock } from 'lucide-react';
+import { Phone, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,22 +8,12 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 const ContactMethods = () => {
   const contactMethods = [
     {
-      icon: MessageCircle,
-      title: 'WhatsApp Chat',
-      description: 'Send us a message anytime',
-      availability: 'Available 24/7',
-      action: 'Send Message',
-      highlight: true,
-      contact: 'wa.me/message/QYOISFIVI4JBB1',
-      onClick: () => window.open('http://wa.me/message/QYOISFIVI4JBB1', '_blank')
-    },
-    {
       icon: Phone,
       title: 'WhatsApp Call',
       description: 'Call us directly on WhatsApp',
       availability: 'Mon-Sat 8AM-7PM, Sun 12PM-5PM',
       action: 'Call Now',
-      highlight: false,
+      highlight: true,
       contact: '+234 811 269 8594',
       onClick: () => window.open('https://wa.me/2348112698594', '_blank')
     }
@@ -32,7 +22,7 @@ const ContactMethods = () => {
   return (
     <section className="px-4 mb-8">
       <h2 className="text-xl font-semibold text-foreground mb-6">Get in Touch via WhatsApp</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+      <div className="flex justify-center max-w-md mx-auto">
         {contactMethods.map((method) => (
           <Card 
             key={method.title} 
