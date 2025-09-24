@@ -25,33 +25,23 @@ const Contact = () => {
   const contactMethods = [
     {
       icon: MessageCircle,
-      title: 'Live Chat',
-      description: 'Get instant help from our support team',
+      title: 'WhatsApp Chat',
+      description: 'Send us a message anytime',
       availability: 'Available 24/7',
-      action: 'Start Chat',
+      action: 'Send Message',
       highlight: true,
-      contact: 'chat@shopfashion.com',
-      onClick: () => window.open('mailto:chat@shopfashion.com', '_blank')
+      contact: 'wa.me/message/QYOISFIVI4JBB1',
+      onClick: () => window.open('http://wa.me/message/QYOISFIVI4JBB1', '_blank')
     },
     {
       icon: Phone,
-      title: 'Phone Support',
-      description: 'Speak directly with our experts',
-      availability: 'Mon-Fri 8AM-8PM EST',
+      title: 'WhatsApp Call',
+      description: 'Call us directly on WhatsApp',
+      availability: 'Mon-Sat 8AM-7PM, Sun 12PM-5PM',
       action: 'Call Now',
       highlight: false,
       contact: '+234 811 269 8594',
-      onClick: () => window.open('tel:+2348112698594', '_self')
-    },
-    {
-      icon: Mail,
-      title: 'Email Support',
-      description: 'Send us detailed questions',
-      availability: 'Response within 4 hours',
-      action: 'Send Email',
-      highlight: false,
-      contact: 'modupeolaceline@gmail.com',
-      onClick: () => window.open('mailto:modupeolaceline@gmail.com', '_blank')
+      onClick: () => window.open('https://wa.me/2348112698594', '_blank')
     }
   ];
 
@@ -110,8 +100,8 @@ const Contact = () => {
 
         {/* Contact Methods */}
         <section className="px-4 mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-6">Get in Touch</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="text-xl font-semibold text-foreground mb-6">Get in Touch via WhatsApp</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {contactMethods.map((method) => (
               <Card 
                 key={method.title} 
@@ -168,15 +158,15 @@ const Contact = () => {
 
         {/* Social Media */}
         <section className="px-4 mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-6">Connect with Us</h2>
-          <Card className="neu-card">
+          <h2 className="text-xl font-semibold text-foreground mb-6 text-center">Follow Us on Social Media</h2>
+          <Card className="neu-card max-w-2xl mx-auto">
             <CardContent className="p-6">
               <div className="text-center mb-6">
-                <p className="text-muted-foreground">
-                  Follow us on social media for the latest updates, fashion tips, and exclusive offers
+                <p className="text-muted-foreground text-sm sm:text-base">
+                  Stay connected for the latest updates, fashion tips, and exclusive offers
                 </p>
               </div>
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="flex justify-center gap-6 sm:gap-8">
                 {socialMedia.map((social) => (
                   <HoverCard key={social.name}>
                     <HoverCardTrigger asChild>
@@ -184,10 +174,10 @@ const Contact = () => {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`neu-surface p-6 rounded-xl transition-all duration-300 group hover:scale-110 ${social.bgHover} focus:outline-none focus:ring-2 focus:ring-primary/20`}
+                        className={`neu-surface p-4 sm:p-6 rounded-xl transition-all duration-300 group hover:scale-110 ${social.bgHover} focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[56px] min-w-[56px] flex items-center justify-center`}
                         aria-label={`Follow us on ${social.name}`}
                       >
-                        <i className={`${social.icon} text-3xl ${social.color} ${social.hoverColor} group-hover:scale-110 transition-all duration-300`}></i>
+                        <i className={`${social.icon} text-2xl sm:text-3xl ${social.color} ${social.hoverColor} group-hover:scale-110 transition-all duration-300`}></i>
                       </a>
                     </HoverCardTrigger>
                     <HoverCardContent className="w-fit">
@@ -237,11 +227,11 @@ const Contact = () => {
                         <div className="text-muted-foreground space-y-2">
                           <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                             <span className="text-sm sm:text-base">Monday - Saturday:</span>
-                            <span className="text-sm sm:text-base font-medium">10:00 AM - 8:00 PM</span>
+                            <span className="text-sm sm:text-base font-medium">08:00 AM - 7:00 PM</span>
                           </div>
                           <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                             <span className="text-sm sm:text-base">Sunday:</span>
-                            <span className="text-sm sm:text-base font-medium">12:00 PM - 6:00 PM</span>
+                            <span className="text-sm sm:text-base font-medium">12:00 PM - 5:00 PM</span>
                           </div>
                         </div>
                       </div>
