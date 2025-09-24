@@ -77,6 +77,14 @@ const Header = () => {
           className="w-full"
           showSuggestions={true}
           debounceMs={300}
+          onSearch={(query) => {
+            // Navigate to products page when searching from header
+            if (query.trim()) {
+              const url = new URL('/products', window.location.origin);
+              url.searchParams.set('search', query.trim());
+              window.location.href = url.toString();
+            }
+          }}
         />
       </div>
     </header>
