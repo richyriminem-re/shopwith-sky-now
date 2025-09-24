@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Shield, Truck, Headphones, Zap } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Shield, Truck, Headphones, Zap, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -162,35 +162,27 @@ const Footer = () => {
           <div className="space-y-3 sm:space-y-4 text-center sm:text-left col-span-1 sm:col-span-2 lg:col-span-1">
             <h4 className="font-semibold text-neu-primary text-base sm:text-lg">Stay Updated</h4>
             <p className="text-sm sm:text-base text-neu-muted max-w-sm mx-auto sm:mx-0">
-              Subscribe to get updates on new arrivals and exclusive offers.
+              🎉 Be the first to know! Join our WhatsApp group for new arrivals, special discounts, and VIP offers.
             </p>
             
             <div className="space-y-3">
-              <div className="flex flex-col xs:flex-row gap-2 max-w-sm mx-auto sm:mx-0">
-                <Input 
-                  id="newsletter-email" 
-                  name="newsletter-email" 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="flex-1 text-sm sm:text-base min-h-[44px]" 
-                  aria-label="Newsletter email address" 
-                />
-                <Button 
-                  size="sm" 
-                  className="px-4 py-2 xs:py-0 w-full xs:w-auto min-h-[44px] touch-manipulation" 
-                  aria-label="Subscribe to newsletter"
-                >
-                  <Mail className="w-4 h-4 mr-2 xs:mr-0" />
-                  <span className="xs:hidden">Subscribe</span>
-                </Button>
-              </div>
+              <Button 
+                onClick={() => window.open('http://chat.whatsapp.com/FPRjd2q6mu9Kpjpx7rJc0Q', '_blank')}
+                className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white"
+                aria-label="Join WhatsApp Group"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                ✅ Join WhatsApp Group
+              </Button>
               
               {/* Social Media */}
               <div className="flex justify-center sm:justify-start gap-3 pt-2">
                 <a 
-                  href="#" 
+                  href="http://wa.me/message/QYOISFIVI4JBB1" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
-                  aria-label="Follow us on WhatsApp"
+                  aria-label="Message us on WhatsApp"
                 >
                   <i className="fa-brands fa-whatsapp text-base sm:text-lg text-[#25D366] hover:text-[#128C7E] transition-colors duration-300"></i>
                 </a>

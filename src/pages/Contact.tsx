@@ -59,7 +59,7 @@ const Contact = () => {
     {
       name: 'WhatsApp',
       icon: 'fa-brands fa-whatsapp',
-      url: '#',
+      url: 'http://wa.me/message/QYOISFIVI4JBB1',
       color: 'text-[#25D366]',
       hoverColor: 'hover:text-[#128C7E]',
       bgHover: 'hover:bg-[#25D366]/10'
