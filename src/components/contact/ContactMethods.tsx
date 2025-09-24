@@ -9,12 +9,12 @@ const ContactMethods = () => {
   const contactMethods = [
     {
       icon: Phone,
-      title: 'WhatsApp Call',
-      description: 'Call us directly on WhatsApp',
-      availability: 'Mon-Sat 8AM-7PM, Sun 12PM-5PM',
-      action: 'Call Now',
+      title: 'Connect on WhatsApp',
+      description: 'Message or Call us directly on WhatsApp',
+      availability: '⏰ Mon-Sat 8AM-7PM, Sun 12PM-5PM',
+      action: '💬 Connect on WhatsApp',
       highlight: true,
-      contact: '+234 811 269 8594',
+      contact: '📞 +234 811 269 8594',
       onClick: () => window.open('https://wa.me/2348112698594', '_blank')
     }
   ];
