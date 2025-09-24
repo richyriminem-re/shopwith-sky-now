@@ -21,7 +21,7 @@ const ContactMethods = () => {
 
   return (
     <section className="px-4 mb-8">
-      <h2 className="text-xl font-semibold text-foreground mb-6">Get in Touch via WhatsApp</h2>
+      <h2 className="text-xl font-semibold text-foreground mb-6">Reach Us on WhatsApp</h2>
       <div className="flex justify-center max-w-md mx-auto">
         {contactMethods.map((method) => (
           <Card 
