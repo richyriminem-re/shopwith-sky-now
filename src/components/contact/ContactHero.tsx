@@ -3,16 +3,16 @@ import { MessageCircle } from 'lucide-react';
 
 const ContactHero = () => {
   return (
-    <section className="neu-surface mx-4 mt-4 mb-6">
-      <div className="p-4 sm:p-6">
+    <section className="neu-surface mx-4 mt-4 mb-0">
+      <div className="p-6 sm:p-8">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 neu-surface rounded-xl mb-3">
-            <MessageCircle size={20} className="text-primary sm:size-6" />
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 neu-surface rounded-xl mb-4">
+            <MessageCircle size={24} className="text-primary sm:size-7" />
           </div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3">
             We're Here to Help
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
             Have questions? Need support? Our dedicated team is ready to assist you.
           </p>
         </div>
