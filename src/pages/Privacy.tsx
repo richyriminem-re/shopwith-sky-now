@@ -16,15 +16,9 @@ const Privacy = () => {
 
   const tableOfContents = [
     { id: 'introduction', title: 'Introduction', icon: FileText },
-    { id: 'information-collect', title: 'Information We Collect', icon: Eye },
-    { id: 'how-we-use', title: 'How We Use Information', icon: Settings },
-    { id: 'information-sharing', title: 'Information Sharing', icon: Users },
-    { id: 'payment-security', title: 'Payment Security', icon: Lock },
-    { id: 'cookies', title: 'Cookies & Tracking', icon: Globe },
-    { id: 'data-retention', title: 'Data Retention', icon: Clock },
-    { id: 'your-rights', title: 'Your Rights & Choices', icon: Settings },
-    { id: 'children-privacy', title: 'Children\'s Privacy', icon: Shield },
-    { id: 'data-security', title: 'Data Security', icon: Lock },
+    { id: 'information-collect', title: 'What We Collect', icon: Eye },
+    { id: 'how-we-use', title: 'How We Use It', icon: Settings },
+    { id: 'nigerian-protection', title: 'Nigerian Data Protection', icon: Shield },
     { id: 'contact', title: 'Contact Us', icon: Mail },
   ];
 
@@ -98,54 +92,52 @@ const Privacy = () => {
                   </CardHeader>
                   <CardContent className="prose prose-sm sm:prose-base max-w-none">
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      At Shop With Sky, your privacy and trust mean everything to us. We are committed to protecting 
-                      your personal data and being transparent about how we use it. This Privacy Policy explains what 
-                      information we collect, how we use it, and the steps we take to keep it safe when you shop with us.
+                      At Big Sky, we respect your privacy and are committed to protecting your personal information. 
+                      This Privacy Policy explains how we collect, use, and protect your data when you shop with us 
+                      through our website and WhatsApp ordering system.
                     </p>
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground mt-4">
-                      By using our website, mobile app, or related services, you agree to the practices described in this policy.
+                      By using our services, you agree to the practices described in this policy.
                     </p>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* Information We Collect */}
+              {/* What We Collect */}
               <section id="information-collect" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Information We Collect
+                      What We Collect
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm sm:text-base text-muted-foreground">
-                      We may collect the following information when you interact with our platform:
+                      We collect basic information needed to process your orders and provide customer service:
                     </p>
-                    <div>
+                    <div className="bg-accent/30 p-4 rounded-lg">
                       <h4 className="font-semibold text-sm sm:text-base mb-2">Personal Information</h4>
                       <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                        <li>Name, email address, and phone number</li>
-                        <li>Shipping and billing addresses</li>
-                        <li>Payment information (processed securely by third-party providers)</li>
-                        <li>Account credentials and shopping preferences</li>
+                        <li>Name, phone number, and delivery address</li>
+                        <li>WhatsApp contact information for order communication</li>
+                        <li>Payment preferences (bank details for transfers, cash on delivery)</li>
+                        <li>Order history and product preferences</li>
                       </ul>
                     </div>
-                    <Separator />
-                    <div>
-                      <h4 className="font-semibold text-sm sm:text-base mb-2">Usage Information</h4>
+                    <div className="bg-accent/30 p-4 rounded-lg">
+                      <h4 className="font-semibold text-sm sm:text-base mb-2">Website Usage</h4>
                       <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                        <li>Browsing history and product interactions</li>
-                        <li>Search queries and wishlists</li>
-                        <li>Device and technical information</li>
-                        <li>Location data (if you allow it)</li>
+                        <li>Products you view and add to cart</li>
+                        <li>Device type and location (for shipping estimates)</li>
+                        <li>Basic website analytics to improve our service</li>
                       </ul>
                     </div>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* How We Use Information */}
+              {/* How We Use It */}
               <section id="how-we-use" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
@@ -156,197 +148,74 @@ const Privacy = () => {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm sm:text-base text-muted-foreground mb-4">
-                      We use your information to make your shopping experience seamless, secure, and personalized:
+                      We use your information solely to provide our services:
                     </p>
-                    <div className="space-y-3">
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Order Processing</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To confirm, process, and deliver your purchases
-                        </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="bg-accent/50 p-3 rounded-lg">
+                        <h4 className="font-semibold text-sm mb-1">WhatsApp Communication</h4>
+                        <p className="text-xs text-muted-foreground">Order confirmation, payment details, and delivery updates</p>
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Payments</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To securely handle transactions (via trusted third-party providers)
-                        </p>
+                      <div className="bg-accent/50 p-3 rounded-lg">
+                        <h4 className="font-semibold text-sm mb-1">Order Processing</h4>
+                        <p className="text-xs text-muted-foreground">Processing payments and arranging delivery within Nigeria</p>
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Customer Support</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To respond to your requests and provide assistance
-                        </p>
+                      <div className="bg-accent/50 p-3 rounded-lg">
+                        <h4 className="font-semibold text-sm mb-1">Customer Service</h4>
+                        <p className="text-xs text-muted-foreground">Handling returns, exchanges, and customer inquiries</p>
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Personalization</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To recommend products you may like
-                        </p>
+                      <div className="bg-accent/50 p-3 rounded-lg">
+                        <h4 className="font-semibold text-sm mb-1">Product Recommendations</h4>
+                        <p className="text-xs text-muted-foreground">Suggesting items based on your shopping history</p>
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Communication</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To send order updates, promotions, and newsletters (you can opt out anytime)
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-sm sm:text-base">Security & Fraud Prevention</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          To detect and prevent suspicious or fraudulent activity
-                        </p>
-                      </div>
+                    </div>
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Important:</strong> We never share your WhatsApp number or personal details with third parties 
+                        except our trusted delivery partners within Nigeria.
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* Information Sharing */}
-              <section id="information-sharing" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Information Sharing & Disclosure
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="prose prose-sm sm:prose-base max-w-none">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      We respect your privacy and do not sell or rent your personal information. However, we may share 
-                      your data in limited circumstances:
-                    </p>
-                    <ul className="text-xs sm:text-sm text-muted-foreground mt-3 space-y-1">
-                      <li>• With service providers such as payment processors, shipping partners, and IT support who help us run our business</li>
-                      <li>• When required by law, regulation, or legal process</li>
-                      <li>• During business transfers, such as a merger or acquisition</li>
-                      <li>• With your explicit consent</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Payment Security */}
-              <section id="payment-security" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Payment Security
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="prose prose-sm sm:prose-base max-w-none">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      Your payment details are not stored by Shop With Sky. All transactions are securely processed by 
-                      trusted payment providers who comply with industry standards such as PCI-DSS (Payment Card Industry 
-                      Data Security Standard).
-                    </p>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Cookies & Tracking */}
-              <section id="cookies" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Cookies & Tracking Technologies
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      We use cookies and similar technologies to improve your shopping experience. This includes:
-                    </p>
-                    <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
-                      <p>• Keeping items in your cart</p>
-                      <p>• Analyzing site performance and usage</p>
-                      <p>• Personalizing product recommendations</p>
-                      <p>• Showing relevant ads</p>
-                    </div>
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      You can control cookies through your browser settings, but disabling them may affect site functionality.
-                    </p>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Data Retention */}
-              <section id="data-retention" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Data Retention
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      We keep your personal data only for as long as necessary:
-                    </p>
-                    <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
-                      <p>• Order and transaction records are retained to meet legal, tax, and accounting obligations</p>
-                      <p>• Account information is kept while your account is active</p>
-                      <p>• Marketing data is kept until you unsubscribe or request deletion</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Data Security */}
-              <section id="data-security" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Data Security
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="prose prose-sm sm:prose-base max-w-none">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      We use industry-standard security practices to protect your data, including SSL encryption, secure 
-                      servers, and regular audits. However, no online transmission or storage method is 100% secure.
-                    </p>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Your Rights */}
-              <section id="your-rights" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Your Rights & Choices
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      Depending on your location, you may have the following rights:
-                    </p>
-                    <div className="text-xs sm:text-sm text-muted-foreground space-y-2">
-                      <p>• <strong>Access:</strong> Request a copy of your personal data</p>
-                      <p>• <strong>Correction:</strong> Update inaccurate or incomplete information</p>
-                      <p>• <strong>Deletion:</strong> Ask us to delete your personal data (except where required by law)</p>
-                      <p>• <strong>Portability:</strong> Receive your data in a portable format</p>
-                      <p>• <strong>Opt-out:</strong> Unsubscribe from promotional communications anytime</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Children's Privacy */}
-              <section id="children-privacy" className="scroll-mt-24">
+              {/* Nigerian Data Protection */}
+              <section id="nigerian-protection" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Children's Privacy
+                      Nigerian Data Protection
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="prose prose-sm sm:prose-base max-w-none">
+                  <CardContent className="space-y-4">
                     <p className="text-sm sm:text-base text-muted-foreground">
-                      Shop With Sky is not directed at children under 13 (or under 16 in some regions). We do not knowingly 
-                      collect personal data from children. If we become aware that we have done so, we will delete it immediately.
+                      As a Nigerian business, we comply with Nigeria's data protection laws and regulations:
                     </p>
+                    <div className="space-y-3">
+                      <div>
+                        <h4 className="font-semibold text-sm sm:text-base">Your Rights</h4>
+                        <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                          <li>Request access to your personal data</li>
+                          <li>Correct inaccurate information</li>
+                          <li>Delete your account and data</li>
+                          <li>Opt out of marketing messages</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-sm sm:text-base">Data Security</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          We use secure servers, encrypted communications, and limit access to your data to authorized 
+                          personnel only. Your payment information is processed through secure Nigerian banking partners.
+                        </p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-sm sm:text-base">Data Retention</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          We keep your order information for 2 years for warranty and customer service purposes. 
+                          Marketing data is kept until you unsubscribe.
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </section>
@@ -361,12 +230,28 @@ const Privacy = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-sm sm:text-base space-y-2 text-muted-foreground">
-                      <p>If you have any questions about this Privacy Policy or your data, please contact us:</p>
-                      <div className="bg-accent/50 p-3 rounded-lg mt-3">
-                        <p>📧 <strong>Email:</strong> privacy@shopwithsky.com</p>
-                        <p>📍 <strong>Address:</strong> Lagos, Nigeria</p>
-                        <p>📞 <strong>Phone:</strong> +234 801 234 5678</p>
+                    <div className="text-sm sm:text-base space-y-3 text-muted-foreground">
+                      <p>For questions about your privacy or data, contact us:</p>
+                      <div className="bg-accent/50 p-4 rounded-lg space-y-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <p><strong>WhatsApp Business:</strong></p>
+                            <p>+234 800 BIG SKY</p>
+                          </div>
+                          <div>
+                            <p><strong>Privacy Email:</strong></p>
+                            <p>privacy@bigsky.ng</p>
+                          </div>
+                        </div>
+                        <Separator className="my-3" />
+                        <div>
+                          <p><strong>Business Address:</strong></p>
+                          <p>Big Sky Fashion Store<br />
+                          Lagos, Nigeria</p>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-3">
+                          <p>We respond to privacy requests within 30 days.</p>
+                        </div>
                       </div>
                     </div>
                   </CardContent>

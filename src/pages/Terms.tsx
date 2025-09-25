@@ -17,16 +17,10 @@ const Terms = () => {
   const effectiveDate = "January 1, 2025";
 
   const tableOfContents = [
-    { id: 'acceptance', title: 'Acceptance of Terms', icon: Scale },
-    { id: 'services', title: 'Description of Services', icon: ShoppingCart },
-    { id: 'accounts', title: 'User Accounts', icon: FileText },
-    { id: 'orders', title: 'Orders & Payments', icon: CreditCard },
-    { id: 'shipping', title: 'Shipping & Delivery', icon: Truck },
-    { id: 'returns', title: 'Returns & Refunds', icon: RotateCcw },
-    { id: 'prohibited', title: 'Prohibited Activities', icon: AlertTriangle },
-    { id: 'intellectual', title: 'Intellectual Property', icon: FileText },
-    { id: 'limitation', title: 'Limitation of Liability', icon: Scale },
-    { id: 'termination', title: 'Termination', icon: Clock },
+    { id: 'agreement', title: 'Agreement', icon: Scale },
+    { id: 'whatsapp-ordering', title: 'WhatsApp Ordering', icon: ShoppingCart },
+    { id: 'payment-delivery', title: 'Payment & Delivery', icon: CreditCard },
+    { id: 'returns', title: 'Returns Policy', icon: RotateCcw },
     { id: 'contact', title: 'Contact Information', icon: Mail },
   ];
 
@@ -94,209 +88,151 @@ const Terms = () => {
             {/* Main content */}
             <main className="lg:col-span-9 space-y-6 sm:space-y-8">
               
-              {/* Acceptance of Terms */}
-              <section id="acceptance" className="scroll-mt-24">
+              {/* Agreement */}
+              <section id="agreement" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Acceptance of Terms
+                      Agreement
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="prose prose-sm sm:prose-base max-w-none">
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      By accessing and using Shop With Sky's website and services, you accept and agree to be bound 
-                      by these Terms of Service. If you do not agree to these terms, please do not use our services.
+                      By using Big Sky's website and WhatsApp ordering service, you agree to these terms. 
+                      If you don't agree, please don't use our services.
                     </p>
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground mt-4">
-                      These terms constitute a legally binding agreement between you and Shop With Sky. We may update 
-                      these terms periodically, and your continued use of our services constitutes acceptance of any changes.
+                      We may update these terms occasionally. Continued use of our services means you accept any changes.
                     </p>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* Description of Services */}
-              <section id="services" className="scroll-mt-24">
+              {/* WhatsApp Ordering */}
+              <section id="whatsapp-ordering" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Description of Services
+                      WhatsApp Ordering Process
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm sm:text-base text-muted-foreground">
-                      Shop With Sky operates an e-commerce platform offering fashion and lifestyle products. Our services include:
+                      Our unique WhatsApp ordering system works as follows:
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-3">
                       <div className="bg-accent/50 p-3 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-1">Product Sales</h4>
-                        <p className="text-xs text-muted-foreground">Clothing, accessories, and lifestyle items</p>
+                        <h4 className="font-semibold text-sm mb-1">1. Browse & Add to Cart</h4>
+                        <p className="text-xs text-muted-foreground">Browse our website and add items to your cart</p>
                       </div>
                       <div className="bg-accent/50 p-3 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-1">Order Processing</h4>
-                        <p className="text-xs text-muted-foreground">Secure payment and fulfillment services</p>
+                        <h4 className="font-semibold text-sm mb-1">2. WhatsApp Checkout</h4>
+                        <p className="text-xs text-muted-foreground">Click "Order via WhatsApp" to be redirected to our WhatsApp Business</p>
                       </div>
                       <div className="bg-accent/50 p-3 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-1">Customer Support</h4>
-                        <p className="text-xs text-muted-foreground">Help with orders, returns, and inquiries</p>
+                        <h4 className="font-semibold text-sm mb-1">3. Order Confirmation</h4>
+                        <p className="text-xs text-muted-foreground">Our team confirms your order, sizes, and delivery details</p>
                       </div>
                       <div className="bg-accent/50 p-3 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-1">Account Management</h4>
-                        <p className="text-xs text-muted-foreground">User profiles, order history, and preferences</p>
+                        <h4 className="font-semibold text-sm mb-1">4. Payment & Delivery</h4>
+                        <p className="text-xs text-muted-foreground">Choose payment method and receive your order</p>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* User Accounts */}
-              <section id="accounts" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                      User Accounts
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-sm sm:text-base mb-2">Account Registration</h4>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        You must provide accurate and complete information when creating an account. 
-                        You are responsible for maintaining the confidentiality of your account credentials.
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Note:</strong> By using WhatsApp ordering, you agree to communicate with our business 
+                        via WhatsApp for order-related matters.
                       </p>
                     </div>
-                    <Separator />
-                    <div>
-                      <h4 className="font-semibold text-sm sm:text-base mb-2">Account Security</h4>
-                      <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                        <li>Use a strong, unique password</li>
-                        <li>Do not share your account with others</li>
-                        <li>Notify us immediately of any unauthorized access</li>
-                        <li>Keep your contact information up to date</li>
-                      </ul>
-                    </div>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* Orders & Payments */}
-              <section id="orders" className="scroll-mt-24">
+              {/* Payment & Delivery */}
+              <section id="payment-delivery" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Orders & Payments
+                      Payment & Delivery in Nigeria
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="font-semibold text-sm mb-2">Order Confirmation</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          All orders are subject to acceptance and inventory availability. 
-                          We reserve the right to cancel orders for any reason.
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-sm mb-2">Payment Terms</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Payment is due at the time of order. We accept major credit cards, 
-                          debit cards, and other payment methods as displayed.
-                        </p>
+                    <div>
+                      <h4 className="font-semibold text-sm sm:text-base mb-2">Payment Options</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="bg-accent/30 p-3 rounded-lg text-center">
+                          <h5 className="font-medium text-sm">Bank Transfer</h5>
+                          <p className="text-xs text-muted-foreground">Direct bank transfer</p>
+                        </div>
+                        <div className="bg-accent/30 p-3 rounded-lg text-center">
+                          <h5 className="font-medium text-sm">Card Payment</h5>
+                          <p className="text-xs text-muted-foreground">Debit/Credit cards</p>
+                        </div>
+                        <div className="bg-accent/30 p-3 rounded-lg text-center">
+                          <h5 className="font-medium text-sm">Cash on Delivery</h5>
+                          <p className="text-xs text-muted-foreground">Pay when you receive</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="bg-accent/30 p-4 rounded-lg">
-                      <h4 className="font-semibold text-sm mb-2">Pricing</h4>
-                      <p className="text-xs sm:text-sm text-muted-foreground">
-                        All prices are subject to change without notice. Taxes and shipping costs 
-                        will be calculated at checkout based on your location.
+                    <Separator />
+                    <div>
+                      <h4 className="font-semibold text-sm sm:text-base mb-2">Delivery Across Nigeria</h4>
+                      <div className="text-xs sm:text-sm text-muted-foreground space-y-1">
+                        <p>• <strong>Lagos & Abuja:</strong> 1-2 business days</p>
+                        <p>• <strong>Major Cities:</strong> 2-4 business days (Port Harcourt, Kano, Ibadan, etc.)</p>
+                        <p>• <strong>Other Locations:</strong> 3-7 business days</p>
+                        <p>• <strong>Same-day Delivery:</strong> Available in Lagos Island, VI, and Ikoyi</p>
+                      </div>
+                    </div>
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4 rounded-lg">
+                      <p className="text-xs sm:text-sm text-green-800 dark:text-green-200">
+                        <strong>Free Delivery:</strong> Orders over ₦15,000 qualify for free delivery within Lagos and Abuja.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
               </section>
 
-              {/* Shipping & Delivery */}
-              <section id="shipping" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Shipping & Delivery
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="text-xs sm:text-sm text-muted-foreground space-y-2">
-                      <p>• <strong>Processing Time:</strong> 1-2 business days for order processing</p>
-                      <p>• <strong>Delivery Time:</strong> 3-7 business days depending on location and method</p>
-                      <p>• <strong>Shipping Costs:</strong> Calculated based on weight, size, and destination</p>
-                      <p>• <strong>International Shipping:</strong> Available to select countries with additional fees</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Returns & Refunds */}
+              {/* Returns Policy */}
               <section id="returns" className="scroll-mt-24">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                       <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Returns & Refunds
+                      7-Day Returns Policy
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="bg-accent/30 p-4 rounded-lg">
-                      <h4 className="font-semibold text-sm mb-2">30-Day Return Policy</h4>
+                      <h4 className="font-semibold text-sm mb-2">Simple Return Process</h4>
                       <p className="text-xs sm:text-sm text-muted-foreground">
-                        Items may be returned within 30 days of delivery in original condition 
-                        with tags attached. Some exclusions apply.
+                        Return unworn items with original tags within 7 days of delivery. 
+                        Contact us via WhatsApp to initiate returns or size exchanges.
                       </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <h4 className="font-semibold text-sm mb-1">Returnable Items</h4>
+                        <h4 className="font-semibold text-sm mb-1">Free Exchanges</h4>
                         <ul className="text-xs text-muted-foreground space-y-1">
-                          <li>• Unworn clothing with tags</li>
-                          <li>• Accessories in original packaging</li>
-                          <li>• Shoes in original box</li>
+                          <li>• Size exchanges in Lagos & Abuja</li>
+                          <li>• We pick up and deliver new size</li>
+                          <li>• Same item, different size only</li>
                         </ul>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-sm mb-1">Non-Returnable Items</h4>
+                        <h4 className="font-semibold text-sm mb-1">Return Shipping</h4>
                         <ul className="text-xs text-muted-foreground space-y-1">
-                          <li>• Intimate apparel</li>
-                          <li>• Personalized items</li>
-                          <li>• Final sale products</li>
+                          <li>• Lagos & Abuja: Free pickup</li>
+                          <li>• Other locations: Customer pays return shipping</li>
+                          <li>• Defective items: We cover all costs</li>
                         </ul>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Limitation of Liability */}
-              <section id="limitation" className="scroll-mt-24">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Limitation of Liability
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="prose prose-sm sm:prose-base max-w-none">
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                      Shop With Sky's liability is limited to the maximum extent permitted by law. We are not liable 
-                      for any indirect, incidental, special, or consequential damages arising from your use of our services.
-                    </p>
-                    <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 p-4 rounded-lg mt-4">
-                      <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200">
-                        <strong>Important:</strong> Our maximum liability for any claim is limited to the amount 
-                        you paid for the specific product or service that gave rise to the claim.
-                      </p>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      <p><strong>Non-returnable:</strong> Intimate wear, earrings, and personalized items.</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -312,25 +248,27 @@ const Terms = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-sm sm:text-base space-y-2 text-muted-foreground">
-                      <p>For questions about these Terms of Service, contact us at:</p>
-                      <div className="bg-accent/50 p-4 rounded-lg mt-3 space-y-2">
+                    <div className="text-sm sm:text-base space-y-3 text-muted-foreground">
+                      <p>For questions about these terms or our services, reach out to us:</p>
+                      <div className="bg-accent/50 p-4 rounded-lg space-y-3">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
-                            <p><strong>Legal Department:</strong></p>
-                            <p>legal@shopwithsky.com</p>
+                            <p><strong>WhatsApp Business:</strong></p>
+                            <p>+234 800 BIG SKY</p>
                           </div>
                           <div>
                             <p><strong>Customer Service:</strong></p>
-                            <p>support@shopwithsky.com</p>
+                            <p>support@bigsky.ng</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
-                          <p><strong>Mailing Address:</strong></p>
-                          <p>Shop With Sky Legal Department<br />
+                          <p><strong>Business Address:</strong></p>
+                          <p>Big Sky Fashion Store<br />
                           Lagos, Nigeria</p>
-                          <p><strong>Phone:</strong> +234 801 234 5678</p>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-3">
+                          <p>Business Hours: Monday - Saturday, 9 AM - 6 PM (WAT)</p>
                         </div>
                       </div>
                     </div>
