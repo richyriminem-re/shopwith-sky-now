@@ -27,6 +27,16 @@ const Products = () => {
 
   // Handle URL synchronization automatically  
   useFilterSync();
+
+  // Initialize search query from URL on mount
+  useEffect(() => {
+    const searchParam = searchParams.get('search');
+    if (searchParam && searchParam !== searchQuery) {
+      // Don't trigger filter update, just sync the display
+      useFilterStore.setState({ searchQuery: searchParam });
+    }
+  }, []); // Only run on mount
+
   const isValidPrimaryCategory = (value: string): value is PrimaryCategory => {
     return ['bags-shoes', 'mens-fashion', 'womens-fashion', 'beauty-fragrance'].includes(value);
   };

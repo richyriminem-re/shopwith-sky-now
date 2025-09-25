@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, ShoppingCart, Menu, X } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import ThemeToggle from './ThemeToggle';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.items);
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
 
@@ -80,9 +81,7 @@ const Header = () => {
           onSearch={(query) => {
             // Navigate to products page when searching from header
             if (query.trim()) {
-              const url = new URL('/products', window.location.origin);
-              url.searchParams.set('search', query.trim());
-              window.location.href = url.toString();
+              navigate(`/products?search=${encodeURIComponent(query.trim())}`);
             }
           }}
         />

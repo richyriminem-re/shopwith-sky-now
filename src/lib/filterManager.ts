@@ -125,9 +125,13 @@ export const useFilterStore = create<FilterStore>()(
         const trimmed = searchQuery.trim();
         set({ searchQuery: trimmed });
         
-        // Update filters to include search query for validation
-        const current = get().filters;
-        get().updateFilters({ ...current, searchQuery: trimmed || undefined });
+        // Track search analytics if query is not empty
+        if (trimmed) {
+          get().trackFilterUsage('search', trimmed, 0);
+        }
+        
+        // Sync to URL
+        get().syncToUrl();
       },
       
       clearFilters: () => {
@@ -245,8 +249,14 @@ export const useFilterStore = create<FilterStore>()(
         set({ isSyncingUrl: true });
         
         try {
-          const { filters, sort } = get();
+          const { filters, sort, searchQuery } = get();
           const params = filtersToUrlParams(filters, sort);
+          
+          // Add search query to URL params if it exists
+          if (searchQuery) {
+            params.set('search', searchQuery);
+          }
+          
           const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
           
           // Use replaceState to avoid creating browser history entries
