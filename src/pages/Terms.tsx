@@ -254,21 +254,22 @@ const Terms = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <p><strong>WhatsApp Business:</strong></p>
-                            <p>+234 800 SHOP SKY</p>
+                            <p>+234 811 269 8594</p>
                           </div>
                           <div>
                             <p><strong>Customer Service:</strong></p>
-                            <p>support@shopwithsky.ng</p>
+                            <p>modupeolaceline@gmail.com</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
                           <p><strong>Business Address:</strong></p>
                           <p>Shop With Sky Fashion Store<br />
+                          Akogun Street, Olodi Apapa<br />
                           Lagos, Nigeria</p>
                         </div>
                         <div className="text-xs text-muted-foreground mt-3">
-                          <p>Business Hours: Monday - Saturday, 9 AM - 6 PM (WAT)</p>
+                          <p>Business Hours: Monday - Saturday, 8 AM - 6 PM (WAT)</p>
                         </div>
                       </div>
                     </div>
