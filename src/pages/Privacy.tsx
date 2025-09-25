@@ -92,7 +92,7 @@ const Privacy = () => {
                   </CardHeader>
                   <CardContent className="prose prose-sm sm:prose-base max-w-none">
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      At Big Sky, we respect your privacy and are committed to protecting your personal information. 
+                      At Shop With Sky, we respect your privacy and are committed to protecting your personal information. 
                       This Privacy Policy explains how we collect, use, and protect your data when you shop with us 
                       through our website and WhatsApp ordering system.
                     </p>
@@ -236,17 +236,17 @@ const Privacy = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <p><strong>WhatsApp Business:</strong></p>
-                            <p>+234 800 BIG SKY</p>
+                            <p>+234 800 SHOP SKY</p>
                           </div>
                           <div>
                             <p><strong>Privacy Email:</strong></p>
-                            <p>privacy@bigsky.ng</p>
+                            <p>privacy@shopwithsky.ng</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
                           <p><strong>Business Address:</strong></p>
-                          <p>Big Sky Fashion Store<br />
+                          <p>Shop With Sky Fashion Store<br />
                           Lagos, Nigeria</p>
                         </div>
                         <div className="text-xs text-muted-foreground mt-3">

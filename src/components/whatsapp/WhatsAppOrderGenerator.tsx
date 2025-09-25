@@ -32,7 +32,7 @@ export const WhatsAppOrderGenerator = ({
 }: WhatsAppOrderGeneratorProps) => {
   
   const whatsappMessage = useMemo(() => {
-    const message = "Hi Big Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process.";
+    const message = "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process.";
     return encodeURIComponent(message);
   }, []);
 

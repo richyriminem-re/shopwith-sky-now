@@ -99,7 +99,7 @@ const Terms = () => {
                   </CardHeader>
                   <CardContent className="prose prose-sm sm:prose-base max-w-none">
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      By using Big Sky's website and WhatsApp ordering service, you agree to these terms. 
+                      By using Shop With Sky's website and WhatsApp ordering service, you agree to these terms. 
                       If you don't agree, please don't use our services.
                     </p>
                     <p className="text-sm sm:text-base leading-relaxed text-muted-foreground mt-4">
@@ -254,17 +254,17 @@ const Terms = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <p><strong>WhatsApp Business:</strong></p>
-                            <p>+234 800 BIG SKY</p>
+                            <p>+234 800 SHOP SKY</p>
                           </div>
                           <div>
                             <p><strong>Customer Service:</strong></p>
-                            <p>support@bigsky.ng</p>
+                            <p>support@shopwithsky.ng</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
                           <p><strong>Business Address:</strong></p>
-                          <p>Big Sky Fashion Store<br />
+                          <p>Shop With Sky Fashion Store<br />
                           Lagos, Nigeria</p>
                         </div>
                         <div className="text-xs text-muted-foreground mt-3">
