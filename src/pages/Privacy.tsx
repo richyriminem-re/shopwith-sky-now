@@ -236,21 +236,22 @@ const Privacy = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <p><strong>WhatsApp Business:</strong></p>
-                            <p>+234 800 SHOP SKY</p>
+                            <p>+234 811 269 8594</p>
                           </div>
                           <div>
                             <p><strong>Privacy Email:</strong></p>
-                            <p>privacy@shopwithsky.ng</p>
+                            <p>privacy@shopwithsky.com</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
                           <p><strong>Business Address:</strong></p>
                           <p>Shop With Sky Fashion Store<br />
-                          Lagos, Nigeria</p>
+                          Block 15, Victoria Garden City<br />
+                          Lagos State, Nigeria</p>
                         </div>
                         <div className="text-xs text-muted-foreground mt-3">
-                          <p>We respond to privacy requests within 30 days.</p>
+                          <p>We respond to privacy requests within 7 business days.</p>
                         </div>
                       </div>
                     </div>
