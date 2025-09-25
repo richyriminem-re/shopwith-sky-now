@@ -171,8 +171,7 @@ const Footer = () => {
                 className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white"
                 aria-label="Join WhatsApp Group"
               >
-                <MessageCircle className="w-4 h-4 mr-2" />
-                ✅ Join WhatsApp Group
+                Join WhatsApp Group
               </Button>
               
               {/* Social Media */}
