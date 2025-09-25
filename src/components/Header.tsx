@@ -81,7 +81,7 @@ const Header = () => {
           onSearch={(query) => {
             // Navigate to products page when searching from header
             if (query.trim()) {
-              navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+              navigate(`/product?search=${encodeURIComponent(query.trim())}`);
             }
           }}
         />
