@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Package, Edit, Trash2, Eye } from 'lucide-react';
 import { useAdminStore } from '@/lib/adminStore';
-import { supabaseProductsAPI, type CreateProductData, type UpdateProductData } from '@/services/supabaseProductsAPI';
+import { mockProductsAPI, type CreateProductData, type UpdateProductData } from '@/services/mockProductsAPI';
 import { ProductCreateEditModal } from '@/components/admin/ProductCreateEditModal';
 import AdminDataTable, { type TableColumn, type TableAction } from '@/components/admin/AdminDataTable';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -16,38 +16,15 @@ const AdminProducts: React.FC = () => {
   const { setCurrentView } = useAdminStore();
   const { toast } = useToast();
   const { isMobile } = useResponsiveDesign();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState(products);
   const [isLoading, setIsLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [isCreateLoading, setIsCreateLoading] = useState(false);
-  const [isEditLoading, setIsEditLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setCurrentView('products');
-    
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        const productsData = await supabaseProductsAPI.getProducts();
-        setProducts(productsData);
-        setFilteredProducts(productsData);
-      } catch (error) {
-        console.error('Error loading products:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load products. Please try again.",
-          variant: "destructive"
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, [setCurrentView, toast]);
+  }, [setCurrentView]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-NG', {
@@ -154,34 +131,28 @@ const AdminProducts: React.FC = () => {
   ];
 
   const handleDeleteProduct = async (product: Product) => {
-    try {
-      // Optimistic update
-      const updatedProducts = products.filter(p => p.id !== product.id);
-      setProducts(updatedProducts);
-      setFilteredProducts(updatedProducts.filter(p => 
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.primaryCategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.subcategory.toLowerCase().includes(searchQuery.toLowerCase())
-      ));
+    // Optimistic update: Remove product immediately
+    const originalProducts = filteredProducts;
+    setFilteredProducts(prev => prev.filter(p => p.id !== product.id));
+    
+    toast({
+      title: 'Product Deleted',
+      description: `${product.title} has been deleted successfully.`,
+    });
 
-      await supabaseProductsAPI.deleteProduct(product.id);
-      
-      toast({
-        title: "Success",
-        description: "Product deleted successfully"
-      });
+    try {
+      await mockProductsAPI.deleteProduct(product.id);
+      // Refresh data to ensure consistency
+      const updatedProducts = await mockProductsAPI.getProducts();
+      setFilteredProducts(updatedProducts);
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Delete product error:', error);
       // Revert optimistic update on error
-      const productsData = await supabaseProductsAPI.getProducts();
-      setProducts(productsData);
-      setFilteredProducts(productsData);
-      
+      setFilteredProducts(originalProducts);
       toast({
-        title: "Error",
-        description: "Failed to delete product. Please try again.",
-        variant: "destructive"
+        title: 'Delete Error',
+        description: 'Failed to delete product. Please try again.',
+        variant: 'destructive',
       });
     }
   };
@@ -210,16 +181,15 @@ const AdminProducts: React.FC = () => {
   ];
 
   const handleSearch = async (query: string) => {
-    setSearchQuery(query);
     setIsLoading(true);
     try {
-      const results = await supabaseProductsAPI.searchProducts(query);
+      const results = await mockProductsAPI.searchProducts(query);
       setFilteredProducts(results);
     } catch (error) {
       console.error('Search error:', error);
       toast({
         title: 'Search Error',
-        description: 'Failed to search products. Please try again.',  
+        description: 'Failed to search products. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -228,73 +198,116 @@ const AdminProducts: React.FC = () => {
   };
 
   const handleCreateProduct = async (data: CreateProductData) => {
+    setIsSubmitting(true);
+    
+    // Create temporary product for optimistic update
+    const tempProduct: Product = {
+      id: `temp-${Date.now()}`,
+      title: data.title,
+      brand: data.brand,
+      description: data.description,
+      handle: data.title.toLowerCase().replace(/\s+/g, '-'),
+      images: data.images,
+      primaryCategory: data.primaryCategory as any,
+      subcategory: data.subcategory as any,
+      variants: data.variants.map(v => ({
+        id: `temp-variant-${Date.now()}-${Math.random()}`,
+        color: v.color,
+        size: v.size,
+        price: v.price,
+        comparePrice: v.comparePrice,
+        stock: v.stock,
+        sku: '',
+      })),
+    };
+
+    // Optimistic update: Add product immediately
+    setFilteredProducts(prev => [tempProduct, ...prev]);
+    setShowCreateModal(false);
+    
+    toast({
+      title: 'Product Created',
+      description: `${data.title} has been created successfully.`,
+    });
+
     try {
-      setIsCreateLoading(true);
-      
-      const newProduct = await supabaseProductsAPI.createProduct(data);
-      
-      // Update local state
-      const updatedProducts = [newProduct, ...products];
-      setProducts(updatedProducts);
-      setFilteredProducts(updatedProducts.filter(p => 
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.primaryCategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.subcategory.toLowerCase().includes(searchQuery.toLowerCase())
+      const newProduct = await mockProductsAPI.createProduct(data);
+      // Replace temp product with real one
+      setFilteredProducts(prev => prev.map(p => 
+        p.id === tempProduct.id ? newProduct : p
       ));
-      
-      setShowCreateModal(false);
-      toast({
-        title: "Success",
-        description: "Product created successfully"
-      });
     } catch (error) {
-      console.error('Error creating product:', error);
+      console.error('Create product error:', error);
+      // Revert optimistic update on error
+      setFilteredProducts(prev => prev.filter(p => p.id !== tempProduct.id));
       toast({
-        title: "Error",
-        description: "Failed to create product. Please try again.",
-        variant: "destructive"
+        title: 'Create Error',
+        description: 'Failed to create product. Please try again.',
+        variant: 'destructive',
       });
     } finally {
-      setIsCreateLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   const handleEditProduct = async (data: CreateProductData) => {
     if (!editingProduct) return;
     
+    setIsSubmitting(true);
+    
+    // Create updated product for optimistic update
+    const updatedProduct: Product = {
+      ...editingProduct,
+      title: data.title,
+      brand: data.brand,
+      description: data.description,
+      handle: data.title.toLowerCase().replace(/\s+/g, '-'),
+      images: data.images,
+      primaryCategory: data.primaryCategory as any,
+      subcategory: data.subcategory as any,
+      variants: data.variants.map((v, index) => ({
+        id: editingProduct.variants[index]?.id || `variant-${Date.now()}-${index}`,
+        color: v.color,
+        size: v.size,
+        price: v.price,
+        comparePrice: v.comparePrice,
+        stock: v.stock,
+        sku: editingProduct.variants[index]?.sku || '',
+      })),
+    };
+
+    // Store original for potential revert
+    const originalProducts = filteredProducts;
+    
+    // Optimistic update: Update product immediately
+    setFilteredProducts(prev => prev.map(p => 
+      p.id === editingProduct.id ? updatedProduct : p
+    ));
+    setEditingProduct(null);
+    
+    toast({
+      title: 'Product Updated',
+      description: `${data.title} has been updated successfully.`,
+    });
+
     try {
-      setIsEditLoading(true);
-      
       const updateData: UpdateProductData = { ...data, id: editingProduct.id };
-      const updatedProduct = await supabaseProductsAPI.updateProduct(updateData);
-      
-      // Update local state
-      const updatedProducts = products.map(p => 
-        p.id === editingProduct.id ? updatedProduct : p
-      );
-      setProducts(updatedProducts);
-      setFilteredProducts(updatedProducts.filter(p => 
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.primaryCategory.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.subcategory.toLowerCase().includes(searchQuery.toLowerCase())
-      ));
-      
-      setEditingProduct(null);
-      toast({
-        title: "Success",
-        description: "Product updated successfully"
-      });
+      await mockProductsAPI.updateProduct(updateData);
+      // Refresh data to ensure consistency
+      const updatedProducts = await mockProductsAPI.getProducts();
+      setFilteredProducts(updatedProducts);
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error('Update product error:', error);
+      // Revert optimistic update on error
+      setFilteredProducts(originalProducts);
+      setEditingProduct(editingProduct); // Reopen modal
       toast({
-        title: "Error",
-        description: "Failed to update product. Please try again.",
-        variant: "destructive"
+        title: 'Update Error',
+        description: 'Failed to update product. Please try again.',
+        variant: 'destructive',
       });
     } finally {
-      setIsEditLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -417,7 +430,7 @@ const AdminProducts: React.FC = () => {
         }}
         product={editingProduct || undefined}
         onSubmit={editingProduct ? handleEditProduct : handleCreateProduct}
-        isLoading={editingProduct ? isEditLoading : isCreateLoading}
+        isLoading={isSubmitting}
       />
     </div>
   );
