@@ -29,7 +29,7 @@ const SearchInput = ({
   placeholder = "Search products...", 
   className = "",
   debounceMs = 300,
-  showSuggestions = true,
+  showSuggestions = false,
   onSearch,
   onFocus,
   onBlur
