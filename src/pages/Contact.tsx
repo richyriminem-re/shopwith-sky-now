@@ -4,7 +4,6 @@ import PageWithNavigation from '@/components/PageWithNavigation';
 import SEOHead from '@/components/SEOHead';
 import ContactHero from '@/components/contact/ContactHero';
 import ContactMethods from '@/components/contact/ContactMethods';
-import ContactSocialMedia from '@/components/contact/ContactSocialMedia';
 import ContactStoreInfo from '@/components/contact/ContactStoreInfo';
 import { Button } from '@/components/ui/button';
 
@@ -27,8 +26,6 @@ const Contact = () => {
       <div className="pb-20">
         <ContactHero />
         <ContactMethods />
-        <ContactSocialMedia />
-        <ContactStoreInfo />
         
         {/* Newsletter/WhatsApp Section */}
         <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -82,6 +79,8 @@ const Contact = () => {
             </div>
           </div>
         </div>
+        
+        <ContactStoreInfo />
       </div>
     </PageWithNavigation>
   );
