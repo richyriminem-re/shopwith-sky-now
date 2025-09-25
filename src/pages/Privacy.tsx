@@ -240,15 +240,15 @@ const Privacy = () => {
                           </div>
                           <div>
                             <p><strong>Privacy Email:</strong></p>
-                            <p>privacy@shopwithsky.com</p>
+                            <p>modupeolaceline@gmail.com</p>
                           </div>
                         </div>
                         <Separator className="my-3" />
                         <div>
                           <p><strong>Business Address:</strong></p>
                           <p>Shop With Sky Fashion Store<br />
-                          Block 15, Victoria Garden City<br />
-                          Lagos State, Nigeria</p>
+                          Akogun Street, Olodi Apapa<br />
+                          Lagos, Nigeria</p>
                         </div>
                         <div className="text-xs text-muted-foreground mt-3">
                           <p>We respond to privacy requests within 7 business days.</p>
