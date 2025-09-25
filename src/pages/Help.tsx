@@ -16,36 +16,20 @@ const Help = () => {
 
   const faqs = [
     {
-      question: "How do I create an account?",
-      answer: "Click the 'Sign Up' button in the top navigation and fill out the required information including your email and password."
+      question: "How does WhatsApp ordering work?",
+      answer: "Simply add items to your cart and click 'Order via WhatsApp'. You'll be redirected to our WhatsApp Business where our team will guide you through payment options (bank transfer, card payment, or cash on delivery) and confirm your delivery details."
     },
     {
-      question: "How can I track my order?",
-      answer: "Once your order ships, you'll receive a tracking number via email. You can also check your order status in the 'Orders' section of your account."
+      question: "What are your delivery options within Nigeria?",
+      answer: "We deliver nationwide across Nigeria. Lagos and Abuja: 1-2 business days. Other major cities: 2-4 business days. Remote areas: 3-7 business days. Same-day delivery available in Lagos Island, Victoria Island, and Ikoyi for orders placed before 2 PM."
     },
     {
-      question: "What is your return policy?",
-      answer: "We offer a 30-day return policy for unworn items with original tags. Returns are free and can be initiated from your account or by contacting support."
+      question: "Are your products authentic and high quality?",
+      answer: "Absolutely! All our fashion and beauty products are 100% authentic and sourced directly from verified suppliers. We provide quality guarantees and detailed product descriptions with actual photos. Every item goes through quality control before shipping."
     },
     {
-      question: "How long does shipping take?",
-      answer: "Standard shipping takes 3-7 business days. Express shipping (1-3 days) and overnight options are available for an additional fee."
-    },
-    {
-      question: "Do you ship internationally?",
-      answer: "Yes, we ship to over 50 countries worldwide. International shipping times vary by location but typically take 7-14 business days."
-    },
-    {
-      question: "How do I change or cancel my order?",
-      answer: "Orders can be modified or cancelled within 1 hour of placement. After that, please contact our support team for assistance."
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer: "We accept all major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay for your convenience."
-    },
-    {
-      question: "How do I use a promo code?",
-      answer: "Enter your promo code in the 'Discount Code' field during checkout before completing your purchase."
+      question: "What is your return and exchange policy?",
+      answer: "We offer 7-day returns for unworn items with original tags. Size exchanges are free within Lagos and Abuja - we'll pick up and deliver the new size. For other locations, customers cover return shipping. Contact us via WhatsApp to initiate returns or exchanges."
     }
   ];
 
