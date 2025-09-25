@@ -29,19 +29,22 @@ const ContactStoreInfo = () => {
                 </div>
               </div>
               
-              <div className="neu-surface p-4 rounded-xl">
-                <div className="flex items-start gap-3">
-                  <Clock size={20} className="text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-medium text-foreground mb-2">Store Hours</h4>
-                    <div className="text-muted-foreground space-y-2">
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                        <span className="text-sm sm:text-base">Monday - Saturday:</span>
-                        <span className="text-sm sm:text-base font-medium">08:00 AM - 7:00 PM</span>
+              <div className="neu-surface p-4 sm:p-5 rounded-xl">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="flex items-center gap-3 sm:items-start">
+                    <Clock size={24} className="text-primary flex-shrink-0" />
+                    <h4 className="font-medium text-foreground text-base sm:text-lg sm:hidden">Store Hours</h4>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium text-foreground mb-3 text-lg hidden sm:block">Store Hours</h4>
+                    <div className="text-muted-foreground space-y-3">
+                      <div className="flex flex-col xs:flex-row xs:justify-between gap-1 xs:gap-2 p-2 sm:p-0 bg-background/50 sm:bg-transparent rounded-lg sm:rounded-none">
+                        <span className="text-sm sm:text-base font-medium xs:font-normal">Monday - Saturday:</span>
+                        <span className="text-sm sm:text-base font-semibold">08:00 AM - 7:00 PM</span>
                       </div>
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                        <span className="text-sm sm:text-base">Sunday:</span>
-                        <span className="text-sm sm:text-base font-medium">12:00 PM - 5:00 PM</span>
+                      <div className="flex flex-col xs:flex-row xs:justify-between gap-1 xs:gap-2 p-2 sm:p-0 bg-background/50 sm:bg-transparent rounded-lg sm:rounded-none">
+                        <span className="text-sm sm:text-base font-medium xs:font-normal">Sunday:</span>
+                        <span className="text-sm sm:text-base font-semibold">12:00 PM - 5:00 PM</span>
                       </div>
                     </div>
                   </div>
