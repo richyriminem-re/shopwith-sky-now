@@ -45,6 +45,12 @@ const ForgotPassword = createLazyRoute(() => import("./pages/ForgotPassword"));
 const NotFound = createLazyRoute(() => import("./pages/NotFound"));
 const Offline = createLazyRoute(() => import("./pages/Offline"));
 
+// Admin routes
+const AdminLayout = createLazyRoute(() => import("./components/admin/AdminLayout"));
+const AdminLogin = createLazyRoute(() => import("./pages/admin/AdminLogin"));
+const AdminDashboard = createLazyRoute(() => import("./pages/admin/AdminDashboard"));
+const AdminProducts = createLazyRoute(() => import("./pages/admin/AdminProducts"));
+
 
 
 
@@ -169,6 +175,13 @@ const AppContent = () => {
         <Route path="/order-preview" element={<OrderPreview />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/offline" element={<Offline />} />
+        
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+        </Route>
         
 
         {/* Developer Dashboard (Development Only) */}
