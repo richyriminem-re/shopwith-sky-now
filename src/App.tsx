@@ -45,15 +45,6 @@ const ForgotPassword = createLazyRoute(() => import("./pages/ForgotPassword"));
 const NotFound = createLazyRoute(() => import("./pages/NotFound"));
 const Offline = createLazyRoute(() => import("./pages/Offline"));
 
-// Admin route components
-const AdminLayout = createLazyRoute(() => import("./components/admin/AdminLayout"));
-const AdminDashboard = createLazyRoute(() => import("./pages/admin/AdminDashboard"));
-const AdminLogin = createLazyRoute(() => import("./pages/admin/AdminLogin"));
-const AdminProducts = createLazyRoute(() => import("./pages/admin/AdminProducts"));
-const AdminOrders = createLazyRoute(() => import("./pages/admin/AdminOrders"));
-const AdminCustomers = createLazyRoute(() => import("./pages/admin/AdminCustomers"));
-const AdminAnalytics = createLazyRoute(() => import("./pages/admin/AdminAnalytics"));
-const AdminNotifications = createLazyRoute(() => import("./pages/admin/AdminNotifications"));
 
 
 
@@ -179,15 +170,6 @@ const AppContent = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/offline" element={<Offline />} />
         
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="customers" element={<AdminCustomers />} />
-          <Route path="analytics" element={<AdminAnalytics />} />
-          <Route path="notifications" element={<AdminNotifications />} />
-        </Route>
 
         {/* Developer Dashboard (Development Only) */}
         {import.meta.env.DEV && (
