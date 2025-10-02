@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { ProductFormDialog } from '@/components/admin/ProductFormDialog';
 
 interface Product {
   id: string;
@@ -34,6 +35,8 @@ const AdminProducts = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -61,11 +64,60 @@ const AdminProducts = () => {
     }
   };
 
+  const handleEdit = async (productId: string) => {
+    try {
+      // Fetch product with images and variants
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", productId)
+        .single();
+
+      if (productError) throw productError;
+
+      const { data: images } = await supabase
+        .from("product_images")
+        .select("*")
+        .eq("product_id", productId)
+        .order("sort_order");
+
+      const { data: variants } = await supabase
+        .from("product_variants")
+        .select("*")
+        .eq("product_id", productId);
+
+      setEditingProduct({
+        ...product,
+        images: images?.map(img => ({
+          url: img.image_url,
+          alt_text: img.alt_text,
+          sort_order: img.sort_order,
+        })) || [],
+        variants: variants || [],
+      });
+      setFormOpen(true);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to load product",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleDelete = async () => {
     if (!deleteId) return;
 
     try {
       const db = supabase as any;
+      
+      // Delete images first
+      await db.from("product_images").delete().eq("product_id", deleteId);
+      
+      // Delete variants
+      await db.from("product_variants").delete().eq("product_id", deleteId);
+      
+      // Delete product
       const { error } = await db
         .from('products')
         .delete()
@@ -90,6 +142,11 @@ const AdminProducts = () => {
     }
   };
 
+  const handleFormSuccess = () => {
+    setEditingProduct(null);
+    loadProducts();
+  };
+
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.handle.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -111,7 +168,13 @@ const AdminProducts = () => {
               Manage your product catalog
             </p>
           </div>
-          <Button className="w-full sm:w-auto">
+          <Button 
+            className="w-full sm:w-auto"
+            onClick={() => {
+              setEditingProduct(null);
+              setFormOpen(true);
+            }}
+          >
             <Plus className="h-4 w-4 mr-2" />
             Add Product
           </Button>
@@ -142,7 +205,7 @@ const AdminProducts = () => {
                   : 'Get started by adding your first product'}
               </p>
               {!searchTerm && (
-                <Button>
+                <Button onClick={() => setFormOpen(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Product
                 </Button>
@@ -169,7 +232,11 @@ const AdminProducts = () => {
                       )}
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEdit(product.id)}
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button
@@ -188,12 +255,25 @@ const AdminProducts = () => {
         )}
       </div>
 
+      {/* Product Form Dialog */}
+      <ProductFormDialog
+        open={formOpen}
+        onOpenChange={(open) => {
+          setFormOpen(open);
+          if (!open) setEditingProduct(null);
+        }}
+        productId={editingProduct?.id}
+        initialData={editingProduct}
+        onSuccess={handleFormSuccess}
+      />
+
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the product.
+              This action cannot be undone. This will permanently delete the product
+              and all its images and variants.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

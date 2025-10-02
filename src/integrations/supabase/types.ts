@@ -155,7 +155,10 @@ export type Database = {
           featured: boolean | null
           handle: string
           id: string
+          is_active: boolean
           primary_category: string
+          seo_description: string | null
+          seo_title: string | null
           subcategory: string
           tags: string[] | null
           title: string
@@ -168,7 +171,10 @@ export type Database = {
           featured?: boolean | null
           handle: string
           id?: string
+          is_active?: boolean
           primary_category: string
+          seo_description?: string | null
+          seo_title?: string | null
           subcategory: string
           tags?: string[] | null
           title: string
@@ -181,7 +187,10 @@ export type Database = {
           featured?: boolean | null
           handle?: string
           id?: string
+          is_active?: boolean
           primary_category?: string
+          seo_description?: string | null
+          seo_title?: string | null
           subcategory?: string
           tags?: string[] | null
           title?: string
