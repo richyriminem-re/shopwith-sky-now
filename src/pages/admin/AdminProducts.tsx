@@ -143,6 +143,7 @@ const AdminProducts = () => {
   };
 
   const handleFormSuccess = () => {
+    setFormOpen(false);
     setEditingProduct(null);
     loadProducts();
   };
