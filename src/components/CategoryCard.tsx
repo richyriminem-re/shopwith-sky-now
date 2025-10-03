@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
-import { getProductsByCategory } from '@/lib/products';
+import { useState, useEffect } from 'react';
+import { fetchProductsFromSupabase } from '@/services/supabaseProducts';
 import LazyImage from '@/components/LazyImage';
 import { Sparkles, TrendingUp, Percent } from 'lucide-react';
+import type { Product } from '@/types';
 
 interface CategoryCardProps {
   name: string;
@@ -12,6 +14,10 @@ interface CategoryCardProps {
 }
 
 const CategoryCard = ({ name, path, gradient, description, promotionalText }: CategoryCardProps) => {
+  const [itemCount, setItemCount] = useState<number>(0);
+  const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
   // Map category names to product primaryCategory values
   const categoryMappings: Record<string, string> = {
     'Bags & Shoes': 'bags-shoes',
@@ -21,9 +27,27 @@ const CategoryCard = ({ name, path, gradient, description, promotionalText }: Ca
   };
   
   const primaryCategory = categoryMappings[name] || name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-  const categoryProducts = getProductsByCategory(primaryCategory);
-  const itemCount = categoryProducts.length;
-  const featuredProduct = categoryProducts.find(p => p.featured) || categoryProducts[0];
+
+  useEffect(() => {
+    const loadCategoryData = async () => {
+      try {
+        setLoading(true);
+        const products = await fetchProductsFromSupabase({ 
+          category: primaryCategory as any 
+        });
+        setItemCount(products.length);
+        setFeaturedProduct(products.find(p => p.featured) || products[0] || null);
+      } catch (error) {
+        console.error('Error loading category data:', error);
+        setItemCount(0);
+        setFeaturedProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCategoryData();
+  }, [primaryCategory]);
 
   // Get promotional icon based on text
   const getPromotionalIcon = () => {
