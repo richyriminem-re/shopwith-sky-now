@@ -315,92 +315,9 @@ export const getProducts = async (query: ProductsQuery = {}): Promise<Product[]>
   
   const operation = async (): Promise<Product[]> => {
     if (config.features.useMockData) {
-      // TODO: Replace with real API call
-      let filteredProducts = [...products];
-      
-      // Apply search filter
-      if (query.search) {
-        const search = query.search.toLowerCase();
-        filteredProducts = filteredProducts.filter(product =>
-          product.title.toLowerCase().includes(search) ||
-          product.description.toLowerCase().includes(search) ||
-          product.brand?.toLowerCase().includes(search)
-        );
-      }
-      
-      // Apply category filter
-      if (query.category) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.primaryCategory === query.category
-        );
-      }
-      
-      // Apply subcategories filter (OR logic for multiple subcategories)
-      if (query.subcategories?.length) {
-        filteredProducts = filteredProducts.filter(product =>
-          query.subcategories!.includes(product.subcategory)
-        );
-      }
-      
-      // Apply size filter
-      if (query.sizes?.length) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.variants.some(variant =>
-            variant.size && query.sizes!.includes(variant.size)
-          )
-        );
-      }
-      
-      // Apply color filter
-      if (query.colors?.length) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.variants.some(variant =>
-            variant.color && query.colors!.includes(variant.color)
-          )
-        );
-      }
-      
-      // Apply price range filter
-      if (query.priceRange) {
-        const [minPrice, maxPrice] = query.priceRange;
-        filteredProducts = filteredProducts.filter(product =>
-          product.variants.some(variant =>
-            variant.price >= minPrice && variant.price <= maxPrice
-          )
-        );
-      }
-      
-      // Apply deals filter - show only products with discounts
-      if (query.showDeals) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.variants.some(variant => 
-            variant.comparePrice && variant.comparePrice > variant.price
-          )
-        );
-      }
-      
-      // Apply sorting
-      if (query.sort) {
-        switch (query.sort) {
-          case 'price-low':
-            filteredProducts.sort((a, b) => 
-              Math.min(...a.variants.map(v => v.price)) - Math.min(...b.variants.map(v => v.price))
-            );
-            break;
-          case 'price-high':
-            filteredProducts.sort((a, b) => 
-              Math.max(...b.variants.map(v => v.price)) - Math.max(...a.variants.map(v => v.price))
-            );
-            break;
-          case 'newest':
-            // Mock: shuffle for demo purposes
-            filteredProducts.sort(() => Math.random() - 0.5);
-            break;
-        }
-      }
-      
-      const response = await createMockResponse(filteredProducts);
-      return response.data;
+      // Using Supabase instead of mock data
+      const { fetchProductsFromSupabase } = await import('./supabaseProducts');
+      return await fetchProductsFromSupabase(query);
     }
 
     // Real API call (when backend is ready)
@@ -429,10 +346,9 @@ export const getProductById = async (id: string): Promise<Product | null> => {
   
   const operation = async (): Promise<Product | null> => {
     if (config.features.useMockData) {
-      // TODO: Replace with real API call
-      const product = products.find(p => p.id === id) || null;
-      const response = await createMockResponse(product);
-      return response.data;
+      // Using Supabase instead of mock data
+      const { fetchProductByIdFromSupabase } = await import('./supabaseProducts');
+      return await fetchProductByIdFromSupabase(id);
     }
 
     const response = await apiClient.get<SingleProductResponse>(`/products/${id}`);
@@ -473,13 +389,14 @@ export const getProductByHandle = async (handle: string): Promise<Product | null
   const operation = async (): Promise<Product | null> => {
     if (config.features.useMockData) {
       try {
-        if (import.meta.env.DEV) console.log('Using mock data, searching for handle:', handle);
-        const product = products.find(p => p.handle === handle) || null;
+        if (import.meta.env.DEV) console.log('Using Supabase, searching for handle:', handle);
+        // Using Supabase instead of mock data
+        const { fetchProductByHandleFromSupabase } = await import('./supabaseProducts');
+        const product = await fetchProductByHandleFromSupabase(handle);
         if (import.meta.env.DEV) console.log('Found product:', product ? product.title : 'not found');
-        const response = await createMockResponse(product);
-        return response.data;
+        return product;
       } catch (error) {
-        console.error('Error in mock data fetch:', error);
+        console.error('Error fetching from Supabase:', error);
         return null;
       }
     }
@@ -532,10 +449,9 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
 export const getFeaturedProducts = async (): Promise<Product[]> => {
   const operation = async (): Promise<Product[]> => {
     if (config.features.useMockData) {
-      // TODO: Replace with real API call
-      const featured = products.filter(p => p.featured).slice(0, 8);
-      const response = await createMockResponse(featured);
-      return response.data;
+      // Using Supabase instead of mock data
+      const { fetchFeaturedProductsFromSupabase } = await import('./supabaseProducts');
+      return await fetchFeaturedProductsFromSupabase();
     }
 
     const response = await apiClient.get<ProductResponse>('/products', { featured: true });

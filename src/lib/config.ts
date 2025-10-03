@@ -15,8 +15,8 @@ export const config = {
   
   // Feature Flags
   features: {
-    // Set to false to use real API endpoints instead of mock data
-    useMockData: import.meta.env.VITE_USE_MOCK_DATA !== 'false',
+    // Using Supabase for data instead of mock data
+    useMockData: true, // Keep this true - we've updated the code to use Supabase when this is true
     enableAuth: import.meta.env.VITE_ENABLE_AUTH === 'true',
     
     // Smart Navigation Feature Flags
