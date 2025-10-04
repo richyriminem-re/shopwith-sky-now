@@ -65,6 +65,60 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_slides: {
+        Row: {
+          alt_text: string | null
+          created_at: string | null
+          cta_position: string | null
+          cta_size: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          link_target: string | null
+          link_text: string | null
+          link_url: string | null
+          title: string
+          updated_at: string | null
+          webp_url: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string | null
+          cta_position?: string | null
+          cta_size?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          link_target?: string | null
+          link_text?: string | null
+          link_url?: string | null
+          title: string
+          updated_at?: string | null
+          webp_url?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string | null
+          cta_position?: string | null
+          cta_size?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          link_target?: string | null
+          link_text?: string | null
+          link_url?: string | null
+          title?: string
+          updated_at?: string | null
+          webp_url?: string | null
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           alt_text: string | null

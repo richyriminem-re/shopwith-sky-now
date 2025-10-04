@@ -7,7 +7,23 @@ import Autoplay from 'embla-carousel-autoplay';
 import LazyImage from '@/components/LazyImage';
 import { ExternalLink, Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getActiveHeroSlides, type HeroSlide } from '@/data/heroSlides';
+import { supabase } from '@/integrations/supabase/client';
+
+interface HeroSlide {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string;
+  webp_url: string | null;
+  alt_text: string | null;
+  link_url: string | null;
+  link_text: string | null;
+  link_target: string;
+  cta_position: string | null;
+  cta_size: string;
+  is_active: boolean;
+  display_order: number;
+}
 
 interface CTAButtonProps {
   slide: HeroSlide;
@@ -15,7 +31,7 @@ interface CTAButtonProps {
 }
 
 const CTAButton = ({ slide, onClick }: CTAButtonProps) => {
-  if (!slide.linkText || !slide.linkUrl) return null;
+  if (!slide.link_text || !slide.link_url) return null;
 
   return (
     <Button
@@ -29,15 +45,15 @@ const CTAButton = ({ slide, onClick }: CTAButtonProps) => {
         "hover:bg-background/95 hover:scale-105",
         "text-foreground border border-border/20",
         // Position based on slide configuration or default to bottom-center
-        slide.ctaPosition === 'bottom-left' && "bottom-4 left-4",
-        slide.ctaPosition === 'bottom-right' && "bottom-4 right-4", 
-        slide.ctaPosition === 'center' && "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-        !slide.ctaPosition && "bottom-4 left-1/2 -translate-x-1/2"
+        slide.cta_position === 'bottom-left' && "bottom-4 left-4",
+        slide.cta_position === 'bottom-right' && "bottom-4 right-4", 
+        slide.cta_position === 'center' && "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+        !slide.cta_position && "bottom-4 left-1/2 -translate-x-1/2"
       )}
-      size={slide.ctaSize || "default"}
+      size={(slide.cta_size as "default" | "sm" | "lg" | "icon" | null) || "default"}
     >
-      {slide.linkText}
-      {slide.linkTarget === '_blank' && <ExternalLink className="ml-2 h-4 w-4" />}
+      {slide.link_text}
+      {slide.link_target === '_blank' && <ExternalLink className="ml-2 h-4 w-4" />}
     </Button>
   );
 };
@@ -51,25 +67,46 @@ const HeroCarousel = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const slideRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const impressionTracked = useRef<Set<string>>(new Set());
+  const [activeSlides, setActiveSlides] = useState<HeroSlide[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get static hero slides
-  const activeSlides = getActiveHeroSlides();
+  // Fetch hero slides from database
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('hero_slides')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
+
+        if (error) throw error;
+        setActiveSlides(data || []);
+      } catch (error) {
+        console.error('Error fetching hero slides:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSlides();
+  }, []);
 
   // Handle slide click
   const handleSlideClick = useCallback((slide: HeroSlide) => {
-    if (!slide.linkUrl) return;
+    if (!slide.link_url) return;
     
-    if (slide.linkTarget === '_blank') {
-      window.open(slide.linkUrl, '_blank', 'noopener,noreferrer');
+    if (slide.link_target === '_blank') {
+      window.open(slide.link_url, '_blank', 'noopener,noreferrer');
     } else {
       // Use React Router for internal navigation
       try {
-        navigate(slide.linkUrl);
+        navigate(slide.link_url);
       } catch (error) {
         console.error('Navigation failed:', error);
         // Fallback only for external URLs
-        if (slide.linkUrl.startsWith('http')) {
-          window.open(slide.linkUrl, '_self');
+        if (slide.link_url.startsWith('http')) {
+          window.open(slide.link_url, '_self');
         }
       }
     }
@@ -105,7 +142,17 @@ const HeroCarousel = () => {
     }
   };
 
-  // No slides state
+  // Loading and no slides state
+  if (loading) {
+    return (
+      <section className="w-full max-w-full overflow-hidden" aria-label="Loading hero slides">
+        <div className="neu-surface p-8 text-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </section>
+    );
+  }
+
   if (activeSlides.length === 0) {
     return (
       <section className="w-full max-w-full overflow-hidden" aria-label="No hero slides available">
@@ -159,9 +206,9 @@ const HeroCarousel = () => {
                 aria-label={`View ${slide.title} - ${slide.description}`}
               >
                 <LazyImage
-                  src={slide.imageUrl}
-                  webpSrc={slide.webpUrl}
-                  alt={slide.altText || `${slide.title} - ${slide.description}`}
+                  src={slide.image_url}
+                  webpSrc={slide.webp_url || undefined}
+                  alt={slide.alt_text || `${slide.title} - ${slide.description}`}
                   priority={index === 0}
                   aspectRatio="16/9"
                   className="w-full h-[180px] xs:h-[220px] sm:h-[280px] md:h-[360px] lg:h-[440px] xl:h-[480px] object-cover object-center transition-all duration-500 group-hover:scale-110"

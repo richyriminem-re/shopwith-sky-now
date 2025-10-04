@@ -65,6 +65,18 @@ const AdminLayout = () => {
         <Package className="h-5 w-5" />
         Products
       </Button>
+
+      <Button
+        variant="ghost"
+        className="w-full justify-start gap-3"
+        onClick={() => {
+          navigate('/admin/hero-slides');
+          if (mobile) setSidebarOpen(false);
+        }}
+      >
+        <Package className="h-5 w-5" />
+        Hero Slides
+      </Button>
     </nav>
   );
 

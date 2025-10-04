@@ -50,6 +50,7 @@ const AdminLayout = createLazyRoute(() => import("./components/admin/AdminLayout
 const AdminLogin = createLazyRoute(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = createLazyRoute(() => import("./pages/admin/AdminDashboard"));
 const AdminProducts = createLazyRoute(() => import("./pages/admin/AdminProducts"));
+const AdminHeroSlides = createLazyRoute(() => import("./pages/admin/AdminHeroSlides"));
 
 
 
@@ -178,10 +179,11 @@ const AppContent = () => {
         
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-        </Route>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="hero-slides" element={<AdminHeroSlides />} />
+            </Route>
         
 
         {/* Developer Dashboard (Development Only) */}
