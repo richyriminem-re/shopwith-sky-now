@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore, useCheckoutStore } from '@/lib/store';
-import { products } from '@/lib/products';
+import { useProducts } from '@/hooks/useApi';
 import { FREE_SHIPPING_THRESHOLD, calcShippingCost } from '@/lib/shipping';
 import { formatCurrency } from '@/lib/utils';
 import { calculateTotalDiscount } from '@/utils/promo';
@@ -59,6 +59,10 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Fetch products from API
+  const { data: productsData } = useProducts();
+  const products = productsData || [];
+
   // Memoize cart items to avoid recalculation on each render
   const cartItems = useMemo(() => {
     return items.map(item => {
@@ -66,7 +70,7 @@ const Cart = () => {
       const variant = product?.variants.find(v => v.id === item.variantId);
       return { ...item, product, variant };
     }).filter(item => item.product && item.variant);
-  }, [items]);
+  }, [items, products]);
 
   // Centralized pricing calculations using Nigerian system
   const pricing = useMemo(() => {
