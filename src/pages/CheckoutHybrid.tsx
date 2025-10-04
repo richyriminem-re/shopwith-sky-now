@@ -6,7 +6,7 @@ import * as z from 'zod';
 import html2canvas from 'html2canvas';
 import { ArrowLeft, ShoppingCart, MessageCircle, CreditCard, User, Mail, Phone, MapPin, FileText, Download, Lock, Edit, Save, CheckCircle } from 'lucide-react';
 import { useCartStore, useCheckoutStore, useOrderStore } from '@/lib/store';
-import { products } from '@/lib/products';
+import { useProducts } from '@/hooks/useApi';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { formatCurrency } from '@/lib/utils';
@@ -82,6 +82,10 @@ const CheckoutHybrid = () => {
     requiresCart: true, 
     redirectTo: '/cart' 
   });
+
+  // Fetch products from API
+  const { data: productsData } = useProducts();
+  const products = productsData || [];
 
   // Scroll to top when component mounts
   useEffect(() => {
