@@ -4,7 +4,7 @@ import { useAdminStore } from '@/lib/adminStore';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package, LogOut, Home } from 'lucide-react';
+import { Menu, Package, LogOut, Home, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ThemeToggle';
 const AdminLayout = () => {
@@ -73,6 +73,14 @@ const AdminLayout = () => {
     }}>
         <Package className="h-5 w-5" />
         Hero Slides
+      </Button>
+
+      <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => {
+      navigate('/admin/shipping-promos');
+      if (mobile) setSidebarOpen(false);
+    }}>
+        <Truck className="h-5 w-5" />
+        Shipping & Promos
       </Button>
     </nav>;
   return <div className="min-h-screen bg-background">
