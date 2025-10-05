@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { clearShippingCache } from '@/lib/shipping';
+import { clearPromoCache } from '@/utils/promo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -112,6 +114,7 @@ const AdminShippingPromos = () => {
         if (error) throw error;
         toast.success('Shipping method added');
       }
+      clearShippingCache(); // Clear cache so frontend picks up changes
       setShippingDialogOpen(false);
       resetShippingForm();
       fetchData();
@@ -126,6 +129,7 @@ const AdminShippingPromos = () => {
     try {
       const { error } = await supabase.from('shipping_methods').delete().eq('id', id);
       if (error) throw error;
+      clearShippingCache(); // Clear cache so frontend picks up changes
       toast.success('Shipping method deleted');
       fetchData();
     } catch (error) {
@@ -186,6 +190,7 @@ const AdminShippingPromos = () => {
         if (error) throw error;
         toast.success('Promo code added');
       }
+      clearPromoCache(); // Clear cache so frontend picks up changes
       setPromoDialogOpen(false);
       resetPromoForm();
       fetchData();
@@ -200,6 +205,7 @@ const AdminShippingPromos = () => {
     try {
       const { error } = await supabase.from('promo_codes').delete().eq('id', id);
       if (error) throw error;
+      clearPromoCache(); // Clear cache so frontend picks up changes
       toast.success('Promo code deleted');
       fetchData();
     } catch (error) {
@@ -251,6 +257,7 @@ const AdminShippingPromos = () => {
         .update({ setting_value: freeShippingThreshold })
         .eq('setting_key', 'free_shipping_threshold');
       if (error) throw error;
+      clearShippingCache(); // Clear cache so frontend picks up changes
       toast.success('Free shipping threshold updated');
     } catch (error) {
       console.error('Error updating threshold:', error);

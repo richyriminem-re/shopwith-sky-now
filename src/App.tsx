@@ -14,7 +14,9 @@ import GlobalNavigationTracker from "./components/GlobalNavigationTracker";
 import NavigationIntentTracker from "./components/NavigationIntentTracker";
 import { initDevVerification } from "./utils/devVerification";
 import Layout from "./components/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getFreeShippingThreshold, getShippingMethods } from "./lib/shipping";
+import { getPromoCodes } from "./utils/promo";
 import { createLazyRoute } from "./components/LazyRoute";
 import { NavigationDebugPanel } from "./components/debug/NavigationDebugPanel";
 import { PerformanceMetricsDashboard } from "./components/debug/PerformanceMetricsDashboard";
@@ -72,6 +74,13 @@ const queryClient = new QueryClient({
 // App content component with cache optimization
 const AppContent = () => {
   const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
+  
+  // Initialize shipping and promo settings on app load
+  useEffect(() => {
+    getFreeShippingThreshold().catch(console.error);
+    getShippingMethods().catch(console.error);
+    getPromoCodes().catch(console.error);
+  }, []);
   
   useCacheOptimization({
     prefetchProducts: true,

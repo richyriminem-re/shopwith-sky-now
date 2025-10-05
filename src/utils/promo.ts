@@ -1,4 +1,5 @@
 import { formatCurrency } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface PromoCode {
   type: 'percentage' | 'shipping' | 'fixed';
@@ -8,12 +9,71 @@ export interface PromoCode {
   maxDiscount?: number;
 }
 
+export interface DbPromoCode {
+  id: string;
+  code: string;
+  discount_type: string;
+  discount_value: number;
+  description: string | null;
+  min_order_amount: number | null;
+  max_discount: number | null;
+  expiry_date: string | null;
+  is_active: boolean;
+  usage_limit: number | null;
+  usage_count: number;
+}
+
+let cachedPromoCodes: Record<string, PromoCode> | null = null;
+
+export async function getPromoCodes(): Promise<Record<string, PromoCode>> {
+  if (cachedPromoCodes) return cachedPromoCodes;
+  
+  const { data, error } = await supabase
+    .from('promo_codes')
+    .select('*')
+    .eq('is_active', true);
+  
+  if (error) {
+    console.error('Error fetching promo codes:', error);
+    return {};
+  }
+  
+  const promoCodes: Record<string, PromoCode> = {};
+  
+  data?.forEach((promo: DbPromoCode) => {
+    // Check if promo is expired
+    if (promo.expiry_date && new Date(promo.expiry_date) < new Date()) {
+      return;
+    }
+    
+    // Check if usage limit is reached
+    if (promo.usage_limit && promo.usage_count >= promo.usage_limit) {
+      return;
+    }
+    
+    promoCodes[promo.code] = {
+      type: promo.discount_type as 'percentage' | 'shipping' | 'fixed',
+      value: promo.discount_type === 'percentage' ? promo.discount_value / 100 : promo.discount_value,
+      description: promo.description || '',
+      minSubtotal: promo.min_order_amount || undefined,
+      maxDiscount: promo.max_discount || undefined,
+    };
+  });
+  
+  cachedPromoCodes = promoCodes;
+  return promoCodes;
+}
+
+export function clearPromoCache() {
+  cachedPromoCodes = null;
+}
+
 export const PROMO_CODES: Record<string, PromoCode> = {
   'WELCOME10': { 
     type: 'percentage', 
     value: 0.1, 
     description: '10% off your order',
-    maxDiscount: 50000 // Max ₦50,000 discount
+    maxDiscount: 50000
   },
   'FREESHIP': { 
     type: 'shipping', 
@@ -24,8 +84,8 @@ export const PROMO_CODES: Record<string, PromoCode> = {
     type: 'percentage', 
     value: 0.2, 
     description: '20% off your order',
-    minSubtotal: 100000, // Minimum ₦100,000 order
-    maxDiscount: 100000 // Max ₦100,000 discount
+    minSubtotal: 100000,
+    maxDiscount: 100000
   },
 } as const;
 
@@ -37,9 +97,10 @@ export interface PromoContext {
 
 export function calculatePromoDiscount(
   code: string, 
-  context: PromoContext
+  context: PromoContext,
+  promoCodes: Record<string, PromoCode> = cachedPromoCodes || PROMO_CODES
 ): { discount: number; error?: string } {
-  const promoInfo = PROMO_CODES[code.toUpperCase()];
+  const promoInfo = promoCodes[code.toUpperCase()];
   if (!promoInfo) {
     return { discount: 0, error: 'Invalid promo code' };
   }
@@ -77,12 +138,13 @@ export function calculatePromoDiscount(
 
 export function canApplyCode(
   code: string, 
-  context: PromoContext
+  context: PromoContext,
+  promoCodes: Record<string, PromoCode> = cachedPromoCodes || PROMO_CODES
 ): { canApply: boolean; error?: string } {
   const upperCode = code.toUpperCase();
   
   // Check if code exists
-  if (!PROMO_CODES[upperCode]) {
+  if (!promoCodes[upperCode]) {
     return { canApply: false, error: 'Invalid promo code' };
   }
 
@@ -91,13 +153,13 @@ export function canApplyCode(
     return { canApply: false, error: 'Code already applied' };
   }
 
-  const promoInfo = PROMO_CODES[upperCode];
+  const promoInfo = promoCodes[upperCode];
 
   // Stacking rules
   if (promoInfo.type === 'percentage') {
     // Only one percentage code allowed
     const hasPercentageCode = context.appliedCodes.some(
-      appliedCode => PROMO_CODES[appliedCode]?.type === 'percentage'
+      appliedCode => promoCodes[appliedCode]?.type === 'percentage'
     );
     if (hasPercentageCode) {
       return { canApply: false, error: 'Only one percentage discount allowed' };
@@ -111,7 +173,7 @@ export function canApplyCode(
     }
     // Only one shipping code allowed
     const hasShippingCode = context.appliedCodes.some(
-      appliedCode => PROMO_CODES[appliedCode]?.type === 'shipping'
+      appliedCode => promoCodes[appliedCode]?.type === 'shipping'
     );
     if (hasShippingCode) {
       return { canApply: false, error: 'Only one shipping discount allowed' };
@@ -132,24 +194,25 @@ export function canApplyCode(
 export function calculateTotalDiscount(
   appliedCodes: string[], 
   subtotal: number, 
-  shipping: number
+  shipping: number,
+  promoCodes: Record<string, PromoCode> = cachedPromoCodes || PROMO_CODES
 ): number {
   const context: PromoContext = { subtotal, shipping, appliedCodes };
   
   return appliedCodes.reduce((totalDiscount, code) => {
     const { discount } = calculatePromoDiscount(code, {
       ...context,
-      appliedCodes: appliedCodes.filter(c => c !== code) // Exclude current code to avoid circular dependency
-    });
+      appliedCodes: appliedCodes.filter(c => c !== code)
+    }, promoCodes);
     return totalDiscount + discount;
   }, 0);
 }
 
-export function getAvailableCodes(): string[] {
-  return Object.keys(PROMO_CODES);
+export function getAvailableCodes(promoCodes: Record<string, PromoCode> = cachedPromoCodes || PROMO_CODES): string[] {
+  return Object.keys(promoCodes);
 }
 
-export function getPromoDescription(code: string): string | null {
-  const promoInfo = PROMO_CODES[code.toUpperCase()];
+export function getPromoDescription(code: string, promoCodes: Record<string, PromoCode> = cachedPromoCodes || PROMO_CODES): string | null {
+  const promoInfo = promoCodes[code.toUpperCase()];
   return promoInfo?.description || null;
 }

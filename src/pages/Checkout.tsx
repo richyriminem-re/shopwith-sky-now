@@ -15,6 +15,8 @@ import SEOHead from '@/components/SEOHead';
 import PageWithNavigation from '@/components/PageWithNavigation';
 import BackButton from '@/components/ui/BackButton';
 import { calcShippingCost, getEstimatedDelivery, STANDARD_SHIPPING, EXPRESS_SHIPPING, FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
+import { useShippingSettings } from '@/hooks/useShippingSettings';
+import { usePromoSettings } from '@/hooks/usePromoSettings';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PhoneInput } from '@/components/checkout/PhoneInput';
@@ -59,6 +61,10 @@ const Checkout = () => {
     startNewCheckout
   } = useCheckoutStore();
   const { setLastOrder } = useOrderStore();
+  
+  // Load shipping and promo settings from database
+  useShippingSettings();
+  usePromoSettings();
 
   // Deep page preloading for likely parent and fallback routes
   useCheckoutPreloading();

@@ -8,6 +8,8 @@ import { calculateTotalDiscount } from '@/utils/promo';
 import { useCartSync } from '@/hooks/useCartSync';
 import { useCheckoutSync } from '@/hooks/useCheckoutSync';
 import { useNavigationMonitor } from '@/utils/navigationMonitor';
+import { useShippingSettings } from '@/hooks/useShippingSettings';
+import { usePromoSettings } from '@/hooks/usePromoSettings';
 
 import CartHeader from '@/components/cart/CartHeader';
 import CartItem from '@/components/cart/CartItem';
@@ -35,6 +37,10 @@ const Cart = () => {
   } = useCheckoutStore();
   const [showConflictDialog, setShowConflictDialog] = useState(false);
   const { startNavigationTiming } = useNavigationMonitor();
+  
+  // Load shipping and promo settings from database
+  useShippingSettings();
+  usePromoSettings();
   
   // Multi-tab synchronization
   const cartSync = useCartSync({

@@ -14,6 +14,8 @@ import type { Order } from '@/types';
 import { calcShippingCost } from '@/lib/shipping';
 import { calculateTotalDiscount } from '@/utils/promo';
 import { generateOrderReference } from '@/components/order/EnhancedOrderReference';
+import { useShippingSettings } from '@/hooks/useShippingSettings';
+import { usePromoSettings } from '@/hooks/usePromoSettings';
 import { OrderSummaryMini } from '@/components/checkout/OrderSummaryMini';
 import { WhatsAppOrderGenerator } from '@/components/whatsapp/WhatsAppOrderGenerator';
 import SEOHead from '@/components/SEOHead';
@@ -76,6 +78,10 @@ const CheckoutHybrid = () => {
   const { items, clearCart } = useCartStore();
   const { shippingOption, appliedPromoCodes, resetPromos } = useCheckoutStore();
   const { setLastOrder } = useOrderStore();
+  
+  // Load shipping and promo settings from database
+  useShippingSettings();
+  usePromoSettings();
 
   // Navigation guard - redirect to cart if no items
   useNavigationGuard({ 
