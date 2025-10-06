@@ -1,6 +1,7 @@
 import { formatCurrency, formatDate } from '@/lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef, useState, useEffect } from 'react';
 import { Watermark } from '@/components/ui/Watermark';
+import { getShippingMethods } from '@/lib/shipping';
 
 interface OrderSummaryMiniProps {
   subtotal: number;
@@ -43,6 +44,22 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
   className = ""
 }, ref) => {
   const currentDate = new Date();
+  const [shippingMethodName, setShippingMethodName] = useState('Standard Shipping');
+  const [shippingMethodDelivery, setShippingMethodDelivery] = useState('');
+
+  useEffect(() => {
+    const loadShippingMethod = async () => {
+      const methods = await getShippingMethods();
+      const selectedMethod = methods.find(
+        m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+      );
+      if (selectedMethod) {
+        setShippingMethodName(selectedMethod.name);
+        setShippingMethodDelivery(selectedMethod.estimated_delivery);
+      }
+    };
+    loadShippingMethod();
+  }, [shippingOption]);
 
   return (
     <div ref={ref} className={`neu-surface border border-border rounded-xl overflow-hidden shadow-lg bg-card relative ${className}`}>
@@ -165,9 +182,14 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
               <span className="font-medium" aria-live="polite">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">
-                {shipping === 0 ? '🎉 Free Shipping' : `${shippingOption === 'express' ? 'Express' : 'Standard'} Shipping`}
-              </span>
+              <div className="flex flex-col">
+                <span className="text-muted-foreground">
+                  {shipping === 0 ? '🎉 Free Shipping' : shippingMethodName}
+                </span>
+                {shippingMethodDelivery && shipping > 0 && (
+                  <span className="text-xs text-muted-foreground/70">{shippingMethodDelivery}</span>
+                )}
+              </div>
               <span className="font-medium" aria-live="polite">
                 {shipping === 0 ? 'Free' : formatCurrency(shipping)}
               </span>

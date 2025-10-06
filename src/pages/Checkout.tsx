@@ -14,7 +14,7 @@ import { formatCurrency } from '@/lib/utils';
 import SEOHead from '@/components/SEOHead';
 import PageWithNavigation from '@/components/PageWithNavigation';
 import BackButton from '@/components/ui/BackButton';
-import { calcShippingCost, getEstimatedDelivery, STANDARD_SHIPPING, EXPRESS_SHIPPING, FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
+import { getShippingMethods, getFreeShippingThreshold, getEstimatedDelivery, STANDARD_SHIPPING, EXPRESS_SHIPPING } from '@/lib/shipping';
 import { useShippingSettings } from '@/hooks/useShippingSettings';
 import { usePromoSettings } from '@/hooks/usePromoSettings';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -46,6 +46,8 @@ const validateShipping = (shippingOption: ShippingMethod | null): boolean => {
 const Checkout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
+  const [shippingMethods, setShippingMethods] = useState<any[]>([]);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -65,6 +67,19 @@ const Checkout = () => {
   // Load shipping and promo settings from database
   useShippingSettings();
   usePromoSettings();
+
+  // Fetch shipping methods and threshold
+  useEffect(() => {
+    const loadShippingData = async () => {
+      const [methods, threshold] = await Promise.all([
+        getShippingMethods(),
+        getFreeShippingThreshold()
+      ]);
+      setShippingMethods(methods);
+      setFreeShippingThreshold(threshold);
+    };
+    loadShippingData();
+  }, []);
 
   // Deep page preloading for likely parent and fallback routes
   useCheckoutPreloading();
@@ -121,11 +136,20 @@ const Checkout = () => {
       return total + (variant?.price || 0) * item.qty;
     }, 0);
     
-    const shipping = calcShippingCost(subtotal, shippingOption);
+    // Calculate shipping based on selected method from database
+    let shipping = 0;
+    if (subtotal >= freeShippingThreshold) {
+      shipping = 0;
+    } else {
+      const selectedMethod = shippingMethods.find(
+        m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+      );
+      shipping = selectedMethod ? selectedMethod.cost : 0;
+    }
     const total = subtotal + shipping;
     
     return { subtotal, shipping, total };
-  }, [items, shippingOption]);
+  }, [items, shippingOption, freeShippingThreshold, shippingMethods]);
   
   const { subtotal, shipping: shippingCost, total } = pricing;
 
@@ -210,7 +234,18 @@ const Checkout = () => {
         const variant = product?.variants.find(v => v.id === item.variantId);
         return total + (variant?.price || 0) * item.qty;
       }, 0);
-      const shipping = calcShippingCost(subtotal, shippingOption);
+      
+      // Calculate shipping based on selected method from database
+      let shipping = 0;
+      if (subtotal >= freeShippingThreshold) {
+        shipping = 0;
+      } else {
+        const selectedMethod = shippingMethods.find(
+          m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+        );
+        shipping = selectedMethod ? selectedMethod.cost : 0;
+      }
+      
       const finalPricing = { subtotal, shipping, total: subtotal + shipping };
       
       if (import.meta.env.DEV) console.log('✅ Calculated pricing:', finalPricing);

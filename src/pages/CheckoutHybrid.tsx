@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { formatCurrency } from '@/lib/utils';
 import type { Order } from '@/types';
-import { calcShippingCost } from '@/lib/shipping';
+import { getShippingMethods, getFreeShippingThreshold } from '@/lib/shipping';
 import { calculateTotalDiscount } from '@/utils/promo';
 import { generateOrderReference } from '@/components/order/EnhancedOrderReference';
 import { useShippingSettings } from '@/hooks/useShippingSettings';
@@ -71,6 +71,8 @@ const CheckoutHybrid = () => {
   const [hasDownloadedReceipt, setHasDownloadedReceipt] = useState(false);
   const [isInformationSaved, setIsInformationSaved] = useState(false);
   const [savedInformation, setSavedInformation] = useState<FormData | null>(null);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
+  const [shippingMethods, setShippingMethods] = useState<any[]>([]);
   const receiptRef = useRef<HTMLDivElement>(null);
   
   const navigate = useNavigate();
@@ -82,6 +84,19 @@ const CheckoutHybrid = () => {
   // Load shipping and promo settings from database
   useShippingSettings();
   usePromoSettings();
+
+  // Fetch shipping methods and threshold
+  useEffect(() => {
+    const loadShippingData = async () => {
+      const [methods, threshold] = await Promise.all([
+        getShippingMethods(),
+        getFreeShippingThreshold()
+      ]);
+      setShippingMethods(methods);
+      setFreeShippingThreshold(threshold);
+    };
+    loadShippingData();
+  }, []);
 
   // Navigation guard - redirect to cart if no items
   useNavigationGuard({ 
@@ -174,7 +189,17 @@ const CheckoutHybrid = () => {
     return total + (variant?.price || 0) * item.qty;
   }, 0);
   
-  const shipping = calcShippingCost(subtotal, shippingOption);
+  // Calculate shipping based on selected method from database
+  const shipping = useMemo(() => {
+    if (subtotal >= freeShippingThreshold) {
+      return 0;
+    }
+    const selectedMethod = shippingMethods.find(
+      m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+    );
+    return selectedMethod ? selectedMethod.cost : 0;
+  }, [subtotal, freeShippingThreshold, shippingMethods, shippingOption]);
+  
   const discount = calculateTotalDiscount(appliedPromoCodes, subtotal, shipping);
   const total = Math.max(0, subtotal + shipping - discount);
 
