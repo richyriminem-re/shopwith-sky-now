@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore, useCheckoutStore } from '@/lib/store';
 import { useProducts } from '@/hooks/useApi';
-import { FREE_SHIPPING_THRESHOLD, calcShippingCost } from '@/lib/shipping';
+import { getShippingMethods, getFreeShippingThreshold } from '@/lib/shipping';
 import { formatCurrency } from '@/lib/utils';
 import { calculateTotalDiscount } from '@/utils/promo';
 import { useCartSync } from '@/hooks/useCartSync';
@@ -36,11 +36,26 @@ const Cart = () => {
     resetPromos
   } = useCheckoutStore();
   const [showConflictDialog, setShowConflictDialog] = useState(false);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
+  const [shippingMethods, setShippingMethods] = useState<any[]>([]);
   const { startNavigationTiming } = useNavigationMonitor();
   
   // Load shipping and promo settings from database
   useShippingSettings();
   usePromoSettings();
+
+  // Fetch shipping methods and threshold
+  useEffect(() => {
+    const loadShippingData = async () => {
+      const [methods, threshold] = await Promise.all([
+        getShippingMethods(),
+        getFreeShippingThreshold()
+      ]);
+      setShippingMethods(methods);
+      setFreeShippingThreshold(threshold);
+    };
+    loadShippingData();
+  }, []);
   
   // Multi-tab synchronization
   const cartSync = useCartSync({
@@ -84,7 +99,17 @@ const Cart = () => {
       return total + (item.variant?.price || 0) * item.qty;
     }, 0);
     
-    const shipping = calcShippingCost(subtotal, shippingOption);
+    // Calculate shipping based on selected method from database
+    let shipping = 0;
+    if (subtotal >= freeShippingThreshold) {
+      shipping = 0;
+    } else {
+      const selectedMethod = shippingMethods.find(
+        m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+      );
+      shipping = selectedMethod ? selectedMethod.cost : 0;
+    }
+    
     const total = subtotal + shipping;
     
     return {
@@ -93,7 +118,7 @@ const Cart = () => {
       total,
       itemCount: cartItems.reduce((total, item) => total + item.qty, 0)
     };
-  }, [cartItems, shippingOption]);
+  }, [cartItems, shippingOption, freeShippingThreshold, shippingMethods]);
 
   // Calculate dynamic discount based on applied promo codes
   const discount = calculateTotalDiscount(appliedPromoCodes, pricing.subtotal, pricing.shipping);
@@ -228,7 +253,7 @@ const Cart = () => {
           discount={discount}
           total={total}
           shippingOption={shippingOption}
-          freeShippingThreshold={FREE_SHIPPING_THRESHOLD}
+          freeShippingThreshold={freeShippingThreshold}
         />
       </div>
 

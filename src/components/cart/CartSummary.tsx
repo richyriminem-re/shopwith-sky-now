@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { formatCurrency } from '@/lib/utils';
+import { getShippingMethods } from '@/lib/shipping';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -17,8 +19,22 @@ const CartSummary = ({
   shippingOption, 
   freeShippingThreshold 
 }: CartSummaryProps) => {
+  const [shippingMethodName, setShippingMethodName] = useState('');
   const isEligibleForFreeShipping = subtotal >= freeShippingThreshold;
   const amountForFreeShipping = freeShippingThreshold - subtotal;
+
+  useEffect(() => {
+    const loadShippingMethod = async () => {
+      const methods = await getShippingMethods();
+      const selectedMethod = methods.find(
+        m => m.name.toLowerCase().replace(/\s+/g, '-') === shippingOption
+      );
+      if (selectedMethod) {
+        setShippingMethodName(`${selectedMethod.name} (${selectedMethod.estimated_delivery})`);
+      }
+    };
+    loadShippingMethod();
+  }, [shippingOption]);
 
   return (
     <div className="neu-surface p-3 sm:p-4 rounded-xl diagonal-watermark">
@@ -33,7 +49,7 @@ const CartSummary = ({
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <span className="text-muted-foreground">
-              Shipping ({shippingOption === 'express' ? 'Express 2-3 days' : 'Standard 5-7 days'})
+              Shipping {shippingMethodName && `(${shippingMethodName})`}
             </span>
             {isEligibleForFreeShipping && (
               <span className="text-xs text-green-600 dark:text-green-400">Free shipping unlocked!</span>
