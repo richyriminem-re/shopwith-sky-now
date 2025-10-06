@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { formatCurrency } from '@/lib/utils';
-import { STANDARD_DELIVERY, EXPRESS_DELIVERY, calcShippingCost, FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
+import { getShippingMethods, getFreeShippingThreshold, type ShippingMethod as ShippingMethodType } from '@/lib/shipping';
 
 interface ShippingMethodProps {
   shippingOption: string;
@@ -12,13 +13,45 @@ const ShippingMethod = ({
   onShippingChange, 
   subtotal
 }: ShippingMethodProps) => {
-  const isEligibleForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-  const standardCost = calcShippingCost(subtotal, 'standard');
-  const expressCost = calcShippingCost(subtotal, 'express');
+  const [shippingMethods, setShippingMethods] = useState<ShippingMethodType[]>([]);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState<number>(100000);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadShippingData = async () => {
+      try {
+        const [methods, threshold] = await Promise.all([
+          getShippingMethods(),
+          getFreeShippingThreshold()
+        ]);
+        setShippingMethods(methods);
+        setFreeShippingThreshold(threshold);
+      } catch (error) {
+        console.error('Error loading shipping data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadShippingData();
+  }, []);
+
+  const isEligibleForFreeShipping = subtotal >= freeShippingThreshold;
 
   // Auto-select free shipping when eligible
-  if (isEligibleForFreeShipping && shippingOption !== 'free') {
-    onShippingChange('free');
+  useEffect(() => {
+    if (isEligibleForFreeShipping && shippingOption !== 'free') {
+      onShippingChange('free');
+    }
+  }, [isEligibleForFreeShipping, shippingOption, onShippingChange]);
+
+  if (loading) {
+    return (
+      <div className="neu-surface p-3 sm:p-4 rounded-xl">
+        <h3 className="font-semibold mb-3 text-sm sm:text-base">Shipping Method</h3>
+        <div className="text-sm text-muted-foreground">Loading shipping options...</div>
+      </div>
+    );
   }
 
   return (
@@ -30,7 +63,9 @@ const ShippingMethod = ({
           <div className="neu-pressable flex items-center justify-between p-3 rounded-lg ring-2 ring-primary bg-primary/5">
             <div>
               <div className="font-medium text-sm sm:text-base text-primary">🎉 Free Shipping</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">{STANDARD_DELIVERY}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">
+                {shippingMethods[0]?.estimated_delivery || '5-7 business days'}
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-semibold text-sm sm:text-base text-primary">Free</span>
@@ -40,54 +75,42 @@ const ShippingMethod = ({
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            🎉 Congratulations! You've unlocked free shipping by spending over {formatCurrency(FREE_SHIPPING_THRESHOLD)}
+            🎉 Congratulations! You've unlocked free shipping by spending over {formatCurrency(freeShippingThreshold)}
           </p>
         </div>
       ) : (
         <div className="space-y-3">
-          <label className={`neu-pressable flex items-center justify-between p-3 cursor-pointer rounded-lg transition-all ${
-            shippingOption === 'standard' ? 'ring-2 ring-primary bg-primary/5' : ''
-          }`}>
-            <div>
-              <div className="font-medium text-sm sm:text-base">Standard Shipping</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">{STANDARD_DELIVERY}</div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-sm sm:text-base">
-                {standardCost === 0 ? 'Free' : formatCurrency(standardCost)}
-              </span>
-              <input
-                type="radio"
-                name="shipping"
-                value="standard"
-                checked={shippingOption === 'standard'}
-                onChange={(e) => onShippingChange(e.target.value)}
-                className="w-4 h-4 text-primary bg-background border-border focus:ring-primary"
-              />
-            </div>
-          </label>
-          
-          <label className={`neu-pressable flex items-center justify-between p-3 cursor-pointer rounded-lg transition-all ${
-            shippingOption === 'express' ? 'ring-2 ring-primary bg-primary/5' : ''
-          }`}>
-            <div>
-              <div className="font-medium text-sm sm:text-base">Express Shipping</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">{EXPRESS_DELIVERY}</div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-sm sm:text-base">
-                {expressCost === 0 ? 'Free' : formatCurrency(expressCost)}
-              </span>
-              <input
-                type="radio"
-                name="shipping"
-                value="express"
-                checked={shippingOption === 'express'}
-                onChange={(e) => onShippingChange(e.target.value)}
-                className="w-4 h-4 text-primary bg-background border-border focus:ring-primary"
-              />
-            </div>
-          </label>
+          {shippingMethods.map((method) => {
+            const cost = subtotal >= freeShippingThreshold ? 0 : method.cost;
+            const methodId = method.name.toLowerCase().replace(/\s+/g, '-');
+            
+            return (
+              <label 
+                key={method.id}
+                className={`neu-pressable flex items-center justify-between p-3 cursor-pointer rounded-lg transition-all ${
+                  shippingOption === methodId ? 'ring-2 ring-primary bg-primary/5' : ''
+                }`}
+              >
+                <div>
+                  <div className="font-medium text-sm sm:text-base">{method.name}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">{method.estimated_delivery}</div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-semibold text-sm sm:text-base">
+                    {cost === 0 ? 'Free' : formatCurrency(cost)}
+                  </span>
+                  <input
+                    type="radio"
+                    name="shipping"
+                    value={methodId}
+                    checked={shippingOption === methodId}
+                    onChange={(e) => onShippingChange(e.target.value)}
+                    className="w-4 h-4 text-primary bg-background border-border focus:ring-primary"
+                  />
+                </div>
+              </label>
+            );
+          })}
         </div>
       )}
     </div>
