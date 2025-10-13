@@ -113,7 +113,7 @@ const AdminLayout = () => {
             </SheetContent>
           </Sheet>
           
-          <h1 className="text-lg font-semibold">Shop With Sky Admin</h1>
+          <h1 className="text-lg font-semibold">Admin</h1>
           <ThemeToggle />
         </div>
       </header>
