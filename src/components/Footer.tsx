@@ -2,10 +2,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Shield, Truck, Headphones, Zap, MessageCircle } from 'lucide-react';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
   const customerLinks = [{
     name: 'Contact Us',
     path: '/contact'
@@ -13,7 +11,6 @@ const Footer = () => {
     name: 'FAQ',
     path: '/faq'
   }];
-  
   const companyLinks = [{
     name: 'About Us',
     path: '/about'
@@ -30,7 +27,6 @@ const Footer = () => {
     name: 'Sustainability',
     path: '/sustainability'
   }];
-  
   const categoryLinks = [{
     name: 'Bags & Shoes',
     path: '/product?primary=bags-shoes'
@@ -47,9 +43,7 @@ const Footer = () => {
     name: 'New Arrivals',
     path: '/product?sort=newest'
   }];
-
-  return (
-    <footer className="neu-surface dark:neu-surface border-t border-neu-border dark:border-neu-border mt-16 shadow-neu dark:shadow-neu-dark">
+  return <footer className="neu-surface dark:neu-surface border-t border-neu-border dark:border-neu-border mt-16 shadow-neu dark:shadow-neu-dark">
       {/* Trust Badges */}
       <div className="border-b border-neu-border">
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
@@ -111,11 +105,11 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">+234 811 269 8594</span>
+                <span className="break-all">+234 ..............</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">modupeolaceline@gmail.com</span>
+                <span className="break-all">................@gmail.com</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -128,16 +122,11 @@ const Footer = () => {
           <div className="space-y-3 sm:space-y-4 text-center sm:text-left">
             <h4 className="font-semibold text-neu-primary text-base sm:text-lg">Customer Service</h4>
             <ul className="space-y-2">
-              {customerLinks.map(link => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.path} 
-                    className="text-sm sm:text-base text-neu-muted hover:text-primary transition-colors inline-block py-1 touch-manipulation"
-                  >
+              {customerLinks.map(link => <li key={link.name}>
+                  <Link to={link.path} className="text-sm sm:text-base text-neu-muted hover:text-primary transition-colors inline-block py-1 touch-manipulation">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -145,16 +134,11 @@ const Footer = () => {
           <div className="space-y-3 sm:space-y-4 text-center sm:text-left">
             <h4 className="font-semibold text-neu-primary text-base sm:text-lg">Shop</h4>
             <ul className="space-y-2">
-              {categoryLinks.map(link => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.path} 
-                    className="text-sm sm:text-base text-neu-muted hover:text-primary transition-colors inline-block py-1 touch-manipulation"
-                  >
+              {categoryLinks.map(link => <li key={link.name}>
+                  <Link to={link.path} className="text-sm sm:text-base text-neu-muted hover:text-primary transition-colors inline-block py-1 touch-manipulation">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -166,41 +150,19 @@ const Footer = () => {
             </p>
             
             <div className="space-y-3">
-              <Button 
-                onClick={() => window.open('http://chat.whatsapp.com/FPRjd2q6mu9Kpjpx7rJc0Q', '_blank')}
-                className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white"
-                aria-label="Join WhatsApp Group"
-              >
+              <Button onClick={() => window.open('http://chat.whatsapp.com/FPRjd2q6mu9Kpjpx7rJc0Q', '_blank')} className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white" aria-label="Join WhatsApp Group">
                 Join WhatsApp Group
               </Button>
               
               {/* Social Media */}
               <div className="flex justify-center sm:justify-start gap-3 pt-2">
-                <a 
-                  href="http://wa.me/message/QYOISFIVI4JBB1" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
-                  aria-label="Message us on WhatsApp"
-                >
+                <a href="http://wa.me/message/QYOISFIVI4JBB1" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Message us on WhatsApp">
                   <i className="fa-brands fa-whatsapp text-base sm:text-lg text-[#25D366] hover:text-[#128C7E] transition-colors duration-300"></i>
                 </a>
-                <a 
-                  href="https://instagram.com/sho.pwithsky" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
-                  aria-label="Follow us on Instagram"
-                >
+                <a href="https://instagram.com/sho.pwithsky" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Follow us on Instagram">
                   <i className="fa-brands fa-instagram text-base sm:text-lg text-[#E4405F] hover:text-[#C13584] transition-colors duration-300"></i>
                 </a>
-                <a 
-                  href="https://tiktok.com/@shopwithsky3" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
-                  aria-label="Follow us on TikTok"
-                >
+                <a href="https://tiktok.com/@shopwithsky3" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Follow us on TikTok">
                   <i className="fa-brands fa-tiktok text-base sm:text-lg text-foreground hover:text-foreground transition-colors duration-300"></i>
                 </a>
               </div>
@@ -218,24 +180,16 @@ const Footer = () => {
             </p>
             
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2">
-              <Link 
-                to="/privacy" 
-                className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2"
-              >
+              <Link to="/privacy" className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2">
                 Privacy
               </Link>
-              <Link 
-                to="/terms" 
-                className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2"
-              >
+              <Link to="/terms" className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2">
                 Terms
               </Link>
             </div>
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
