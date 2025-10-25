@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { getAllSiteSettings, updateSiteSetting } from '@/lib/siteSettings';
+import { getAllSiteSettings, updateSiteSetting, clearSiteSettingsCache } from '@/lib/siteSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Upload, Image as ImageIcon } from 'lucide-react';
 
@@ -31,6 +31,8 @@ const AdminSiteSettings = () => {
     setSaving(key);
     try {
       await updateSiteSetting(key, value);
+      clearSiteSettingsCache();
+      window.dispatchEvent(new Event('site-settings-updated'));
       toast({
         title: 'Success',
         description: 'Setting updated successfully',
