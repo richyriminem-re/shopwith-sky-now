@@ -186,7 +186,7 @@ const AdminSiteSettings = () => {
               />
               {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
             </div>
-            <p className="text-sm text-muted-foreground">Recommended: PNG or SVG format, transparent background</p>
+            <p className="text-sm text-muted-foreground">Recommended: PNG or SVG format, transparent background, 150x50px</p>
           </div>
         </CardContent>
       </Card>
@@ -469,7 +469,7 @@ const AdminSiteSettings = () => {
             <div className="space-y-2">
               <Label>Receipt Logo</Label>
               <p className="text-sm text-muted-foreground">
-                Logo displayed on order receipts and summaries. Can be different from site logo.
+                Logo displayed on order receipts and summaries. Recommended: 120x40px
               </p>
               {settings.receipt_logo_url && (
                 <div className="flex items-center gap-4">
@@ -502,7 +502,7 @@ const AdminSiteSettings = () => {
             <div className="space-y-2">
               <Label>Checkout Logo</Label>
               <p className="text-sm text-muted-foreground">
-                Logo displayed in the checkout pages header
+                Logo displayed in the checkout pages header. Recommended: 150x50px
               </p>
               {settings.checkout_logo_url && (
                 <div className="flex items-center gap-4">
