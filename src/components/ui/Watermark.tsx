@@ -1,10 +1,15 @@
 import React from 'react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 interface WatermarkProps {
   className?: string;
+  imageUrl?: string;
 }
 
-export const Watermark: React.FC<WatermarkProps> = ({ className = "" }) => {
+export const Watermark: React.FC<WatermarkProps> = ({ className = "", imageUrl }) => {
+  const { settings } = useSiteSettings();
+  const watermarkUrl = imageUrl || settings.watermark_image_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png';
+
   return (
     <div 
       className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
@@ -17,7 +22,7 @@ export const Watermark: React.FC<WatermarkProps> = ({ className = "" }) => {
           left: 'calc(-1 * clamp(200px, 24vw, 300px))',
           right: 'calc(-1 * clamp(200px, 24vw, 300px))',
           bottom: 'calc(-1 * clamp(200px, 24vw, 300px))',
-          backgroundImage: 'url("/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png")',
+          backgroundImage: `url("${watermarkUrl}")`,
           backgroundSize: 'clamp(120px, 16vw, 200px) auto',
           backgroundRepeat: 'repeat',
           backgroundPosition: '0 0, calc(clamp(200px, 24vw, 300px) * 0.5) calc(clamp(200px, 24vw, 300px) * 0.5)',
@@ -35,7 +40,7 @@ export const Watermark: React.FC<WatermarkProps> = ({ className = "" }) => {
           left: 'calc(-1 * clamp(200px, 24vw, 300px))',
           right: 'calc(-1 * clamp(200px, 24vw, 300px))',
           bottom: 'calc(-1 * clamp(200px, 24vw, 300px))',
-          backgroundImage: 'url("/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png")',
+          backgroundImage: `url("${watermarkUrl}")`,
           backgroundSize: 'clamp(120px, 16vw, 200px) auto',
           backgroundRepeat: 'repeat',
           backgroundPosition: '0 0, calc(clamp(200px, 24vw, 300px) * 0.5) calc(clamp(200px, 24vw, 300px) * 0.5)',

@@ -2,6 +2,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import { forwardRef, useState, useEffect } from 'react';
 import { Watermark } from '@/components/ui/Watermark';
 import { getShippingMethods } from '@/lib/shipping';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 interface OrderSummaryMiniProps {
   subtotal: number;
@@ -44,8 +45,11 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
   className = ""
 }, ref) => {
   const currentDate = new Date();
+  const { settings } = useSiteSettings();
   const [shippingMethodName, setShippingMethodName] = useState('Standard Shipping');
   const [shippingMethodDelivery, setShippingMethodDelivery] = useState('');
+  
+  const receiptLogoUrl = settings.receipt_logo_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png';
 
   useEffect(() => {
     const loadShippingMethod = async () => {
@@ -69,7 +73,7 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
         <div className="text-center py-6 px-4 border-b border-border bg-gradient-to-b from-background to-muted/20 relative z-10">
           <div className="flex items-center justify-center mb-4">
             <img 
-              src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
+              src={receiptLogoUrl}
               alt="Shop with Sky Logo" 
               className="h-10 sm:h-12 w-auto object-contain"
             />

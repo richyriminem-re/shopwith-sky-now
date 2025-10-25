@@ -93,6 +93,52 @@ const AdminSiteSettings = () => {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, settingKey: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Error',
+        description: 'Please upload an image file',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${settingKey}-${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(filePath);
+
+      await handleUpdate(settingKey, publicUrl);
+      
+      toast({
+        title: 'Success',
+        description: 'Image uploaded successfully',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to upload image',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -374,6 +420,114 @@ const AdminSiteSettings = () => {
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">Preview: © {new Date().getFullYear()} {settings.footer_copyright_text}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Watermark & Branding Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Watermark & Branding</CardTitle>
+          <CardDescription>Manage logos and watermarks displayed across your store</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Watermark Image */}
+          <div className="space-y-4 border-b border-border pb-6">
+            <div className="space-y-2">
+              <Label>Watermark Image</Label>
+              <p className="text-sm text-muted-foreground">
+                Background watermark on cart summaries and receipts. Recommended: PNG with transparency, 200x200px
+              </p>
+              {settings.watermark_image_url && (
+                <div className="flex items-center gap-4">
+                  <img 
+                    src={settings.watermark_image_url} 
+                    alt="Watermark" 
+                    className="h-20 w-20 object-contain bg-muted p-2 rounded border border-border"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="watermark-upload">Upload New Watermark</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="watermark-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, 'watermark_image_url')}
+                  disabled={uploading}
+                  className="flex-1"
+                />
+                {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+              </div>
+            </div>
+          </div>
+
+          {/* Receipt Logo */}
+          <div className="space-y-4 border-b border-border pb-6">
+            <div className="space-y-2">
+              <Label>Receipt Logo</Label>
+              <p className="text-sm text-muted-foreground">
+                Logo displayed on order receipts and summaries. Can be different from site logo.
+              </p>
+              {settings.receipt_logo_url && (
+                <div className="flex items-center gap-4">
+                  <img 
+                    src={settings.receipt_logo_url} 
+                    alt="Receipt Logo" 
+                    className="h-16 w-auto object-contain bg-muted p-2 rounded border border-border"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="receipt-logo-upload">Upload New Receipt Logo</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="receipt-logo-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, 'receipt_logo_url')}
+                  disabled={uploading}
+                  className="flex-1"
+                />
+                {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+              </div>
+            </div>
+          </div>
+
+          {/* Checkout Logo */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Checkout Logo</Label>
+              <p className="text-sm text-muted-foreground">
+                Logo displayed in the checkout pages header
+              </p>
+              {settings.checkout_logo_url && (
+                <div className="flex items-center gap-4">
+                  <img 
+                    src={settings.checkout_logo_url} 
+                    alt="Checkout Logo" 
+                    className="h-16 w-auto object-contain bg-muted p-2 rounded border border-border"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="checkout-logo-upload">Upload New Checkout Logo</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="checkout-logo-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, 'checkout_logo_url')}
+                  disabled={uploading}
+                  className="flex-1"
+                />
+                {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

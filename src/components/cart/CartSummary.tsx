@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatCurrency } from '@/lib/utils';
 import { getShippingMethods } from '@/lib/shipping';
+import { Watermark } from '@/components/ui/Watermark';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -37,8 +38,10 @@ const CartSummary = ({
   }, [shippingOption]);
 
   return (
-    <div className="neu-surface p-3 sm:p-4 rounded-xl diagonal-watermark">
-      <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Order Summary</h3>
+    <div className="neu-surface p-3 sm:p-4 rounded-xl relative">
+      <Watermark />
+      <div className="relative z-10">
+        <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Order Summary</h3>
       
       <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
         <div className="flex justify-between items-center">
@@ -77,6 +80,7 @@ const CartSummary = ({
             💡 Spend {formatCurrency(amountForFreeShipping)} more for free standard shipping!
           </div>
         )}
+      </div>
       </div>
     </div>
   );

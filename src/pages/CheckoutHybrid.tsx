@@ -16,6 +16,7 @@ import { calculateTotalDiscount } from '@/utils/promo';
 import { generateOrderReference } from '@/components/order/EnhancedOrderReference';
 import { useShippingSettings } from '@/hooks/useShippingSettings';
 import { usePromoSettings } from '@/hooks/usePromoSettings';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OrderSummaryMini } from '@/components/checkout/OrderSummaryMini';
 import { WhatsAppOrderGenerator } from '@/components/whatsapp/WhatsAppOrderGenerator';
 import SEOHead from '@/components/SEOHead';
@@ -74,6 +75,7 @@ const CheckoutHybrid = () => {
   const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
   const [shippingMethods, setShippingMethods] = useState<any[]>([]);
   const receiptRef = useRef<HTMLDivElement>(null);
+  const { settings } = useSiteSettings();
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -508,7 +510,7 @@ const CheckoutHybrid = () => {
             />
             
             <img 
-              src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
+              src={settings.checkout_logo_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png'}
               alt="Shop with Sky Logo" 
               className="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-[100px] sm:max-w-[120px] flex-shrink-0"
             />
