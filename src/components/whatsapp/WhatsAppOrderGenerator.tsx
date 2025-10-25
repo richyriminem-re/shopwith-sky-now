@@ -17,6 +17,8 @@ interface WhatsAppOrderGeneratorProps {
     phone?: string;
     address?: string;
   };
+  whatsappNumber?: string;
+  whatsappMessage?: string;
 }
 
 export const WhatsAppOrderGenerator = ({
@@ -28,24 +30,23 @@ export const WhatsAppOrderGenerator = ({
   shippingOption,
   appliedPromoCodes = [],
   orderReference,
-  customerInfo
+  customerInfo,
+  whatsappNumber = "2348112698594",
+  whatsappMessage = "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process."
 }: WhatsAppOrderGeneratorProps) => {
   
-  const whatsappMessage = useMemo(() => {
-    const message = "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process.";
-    return encodeURIComponent(message);
-  }, []);
-
-  const whatsappNumber = "2348112698594"; // Your WhatsApp Business number
+  const encodedMessage = useMemo(() => {
+    return encodeURIComponent(whatsappMessage);
+  }, [whatsappMessage]);
 
   const handleWhatsAppOrder = () => {
-    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${whatsappMessage}&type=phone_number&app_absent=0`;
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${encodedMessage}&type=phone_number&app_absent=0`;
     window.open(whatsappUrl, '_blank');
   };
 
   return {
     generateMessage: () => whatsappMessage,
     sendToWhatsApp: handleWhatsAppOrder,
-    whatsappUrl: `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${whatsappMessage}&type=phone_number&app_absent=0`
+    whatsappUrl: `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${encodedMessage}&type=phone_number&app_absent=0`
   };
 };

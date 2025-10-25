@@ -1,5 +1,6 @@
 import { MessageCircle, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 interface WhatsAppContactProps {
   productName?: string;
@@ -16,7 +17,8 @@ export const WhatsAppContact = ({
   variant = 'default',
   size = 'default'
 }: WhatsAppContactProps) => {
-  const whatsappNumber = "2348112698594";
+  const { settings } = useSiteSettings();
+  const whatsappNumber = settings.whatsapp_business_number || "2348112698594";
   
   const generateInquiryMessage = () => {
     let message = "Hello! I'm interested in ";

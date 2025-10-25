@@ -290,7 +290,9 @@ const CheckoutHybrid = () => {
       name,
       phone,
       address: formatAddress(),
-    }
+    },
+    whatsappNumber: settings.whatsapp_business_number || "2348112698594",
+    whatsappMessage: settings.whatsapp_order_message || "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process."
   });
 
   const handleWhatsAppOrder = async (data: FormData) => {

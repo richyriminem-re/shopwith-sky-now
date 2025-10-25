@@ -424,6 +424,58 @@ const AdminSiteSettings = () => {
         </CardContent>
       </Card>
 
+      {/* WhatsApp Settings Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>WhatsApp Settings</CardTitle>
+          <CardDescription>Configure WhatsApp business number and order message</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp_business_number">WhatsApp Business Number</Label>
+            <p className="text-sm text-muted-foreground">
+              Enter the number without spaces or special characters (e.g., 2348112698594)
+            </p>
+            <div className="flex gap-2">
+              <Input
+                id="whatsapp_business_number"
+                value={settings.whatsapp_business_number || ''}
+                onChange={(e) => setSettings({ ...settings, whatsapp_business_number: e.target.value })}
+                placeholder="2348112698594"
+              />
+              <Button
+                onClick={() => handleUpdate('whatsapp_business_number', settings.whatsapp_business_number)}
+                disabled={saving === 'whatsapp_business_number'}
+              >
+                {saving === 'whatsapp_business_number' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp_order_message">WhatsApp Order Message</Label>
+            <p className="text-sm text-muted-foreground">
+              Pre-written message customers will send when placing an order via WhatsApp
+            </p>
+            <div className="flex gap-2">
+              <Textarea
+                id="whatsapp_order_message"
+                value={settings.whatsapp_order_message || ''}
+                onChange={(e) => setSettings({ ...settings, whatsapp_order_message: e.target.value })}
+                placeholder="Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process."
+                rows={3}
+              />
+              <Button
+                onClick={() => handleUpdate('whatsapp_order_message', settings.whatsapp_order_message)}
+                disabled={saving === 'whatsapp_order_message'}
+              >
+                {saving === 'whatsapp_order_message' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Watermark & Branding Section */}
       <Card>
         <CardHeader>

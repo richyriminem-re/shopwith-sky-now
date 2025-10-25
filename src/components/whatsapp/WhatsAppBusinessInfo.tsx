@@ -1,7 +1,11 @@
 import { MessageCircle, Phone, Clock, MapPin } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export const WhatsAppBusinessInfo = () => {
+  const { settings } = useSiteSettings();
+  const whatsappNumber = settings.whatsapp_business_number || "2348112698594";
+  
   const businessHours = [
     { day: 'Monday - Friday', hours: '9:00 AM - 8:00 PM' },
     { day: 'Saturday', hours: '10:00 AM - 6:00 PM' },
@@ -10,11 +14,11 @@ export const WhatsAppBusinessInfo = () => {
 
   const handleWhatsAppContact = () => {
     const message = encodeURIComponent("Hello! I'd like to know more about your products and services.");
-    window.open(`https://wa.me/2348112698594?text=${message}`, '_blank');
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
 
   const handleCall = () => {
-    window.open('tel:+2348112698594', '_self');
+    window.open(`tel:+${whatsappNumber}`, '_self');
   };
 
   return (

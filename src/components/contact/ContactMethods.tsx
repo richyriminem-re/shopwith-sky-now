@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const ContactMethods = () => {
+  const { settings } = useSiteSettings();
+  const whatsappNumber = settings.whatsapp_business_number || "2348112698594";
+  
   const contactMethods = [
     {
       icon: Phone,
@@ -15,7 +19,7 @@ const ContactMethods = () => {
       action: '💬 Connect on WhatsApp',
       highlight: true,
       contact: '📞 +234 811 269 8594',
-      onClick: () => window.open('https://wa.me/2348112698594', '_blank')
+      onClick: () => window.open(`https://wa.me/${whatsappNumber}`, '_blank')
     }
   ];
 
