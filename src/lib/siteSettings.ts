@@ -77,4 +77,6 @@ export const updateSiteSetting = async (key: string, value: string): Promise<voi
 
 export const clearSiteSettingsCache = (): void => {
   sessionStorage.removeItem(CACHE_KEY);
+  // Notify all components to refresh settings
+  window.dispatchEvent(new CustomEvent('site-settings-updated'));
 };

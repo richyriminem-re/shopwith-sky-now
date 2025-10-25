@@ -7,6 +7,7 @@ export const useSiteSettings = () => {
 
   useEffect(() => {
     const loadSettings = async () => {
+      setLoading(true);
       const data = await getAllSiteSettings();
       setSettings(data);
       setLoading(false);
@@ -14,7 +15,15 @@ export const useSiteSettings = () => {
 
     loadSettings();
 
+    // Listen for settings updates from admin panel
+    const handleSettingsUpdate = () => {
+      loadSettings();
+    };
+
+    window.addEventListener('site-settings-updated', handleSettingsUpdate);
+
     return () => {
+      window.removeEventListener('site-settings-updated', handleSettingsUpdate);
       clearSiteSettingsCache();
     };
   }, []);
