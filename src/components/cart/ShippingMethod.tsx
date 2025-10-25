@@ -38,6 +38,20 @@ const ShippingMethod = ({
 
   const isEligibleForFreeShipping = subtotal >= freeShippingThreshold;
 
+  // Auto-select first shipping method when loaded if no valid selection
+  useEffect(() => {
+    if (shippingMethods.length > 0 && !loading) {
+      const validMethodIds = shippingMethods.map(m => m.name.toLowerCase().replace(/\s+/g, '-'));
+      const hasValidSelection = validMethodIds.includes(shippingOption) || shippingOption === 'free';
+      
+      if (!hasValidSelection) {
+        // Select first method by default
+        const firstMethodId = shippingMethods[0].name.toLowerCase().replace(/\s+/g, '-');
+        onShippingChange(firstMethodId);
+      }
+    }
+  }, [shippingMethods, loading, shippingOption, onShippingChange]);
+
   // Auto-select free shipping when eligible
   useEffect(() => {
     if (isEligibleForFreeShipping && shippingOption !== 'free') {

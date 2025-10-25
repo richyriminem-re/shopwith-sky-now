@@ -137,7 +137,7 @@ const Cart = () => {
     const canProceed = await cartSync.preventDuplicateCheckout();
     if (canProceed) {
       startNavigationTiming();
-      navigate('/checkout');
+      navigate('/checkout-hybrid');
     }
   };
 
