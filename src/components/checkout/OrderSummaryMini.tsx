@@ -232,7 +232,7 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
         {orderReference && (
           <div className="border-t border-border pt-4 mt-6 text-center">
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Thank You For Shopping With Sky<br />
+              Thank You For Shopping With Us<br />
               We value your trust and look forward to serving you again.
             </p>
           </div>
