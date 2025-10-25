@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Shield, Truck, Headphones, Zap, MessageCircle } from 'lucide-react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { settings } = useSiteSettings();
   const customerLinks = [{
     name: 'Contact Us',
     path: '/contact'
@@ -96,24 +99,26 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
           <div className="space-y-3 sm:space-y-4 text-center sm:text-left">
-            <h3 className="text-lg sm:text-xl font-bold text-neu-primary">Shop With Sky</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-neu-primary">
+              {settings.footer_company_name || 'Shop With Sky'}
+            </h3>
             <p className="text-neu-muted text-sm sm:text-base leading-relaxed max-w-sm mx-auto sm:mx-0">
-              Discover the latest trends and timeless pieces. Quality fashion that speaks to your unique style.
+              {settings.footer_company_description || 'Your one-stop destination for quality fashion and lifestyle products.'}
             </p>
             
             {/* Contact Info */}
             <div className="space-y-2">
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">+234 ..............</span>
+                <span className="break-all">{settings.footer_phone || '+234 905 777 5190'}</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                <span className="break-all">................@gmail.com</span>
+                <span className="break-all">{settings.footer_email || 'support@shopwithsky.com'}</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-neu-muted">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span className="text-center sm:text-left">your address</span>
+                <span className="text-center sm:text-left">{settings.footer_address || 'Lagos, Nigeria'}</span>
               </div>
             </div>
           </div>
@@ -150,19 +155,41 @@ const Footer = () => {
             </p>
             
             <div className="space-y-3">
-              <Button onClick={() => window.open('http://chat.whatsapp.com/FPRjd2q6mu9Kpjpx7rJc0Q', '_blank')} className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white" aria-label="Join WhatsApp Group">
+              <Button 
+                onClick={() => window.open(settings.footer_whatsapp_group || 'https://chat.whatsapp.com/your-group-link', '_blank')} 
+                className="w-full max-w-sm mx-auto sm:mx-0 min-h-[44px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white" 
+                aria-label="Join WhatsApp Group"
+              >
                 Join WhatsApp Group
               </Button>
               
               {/* Social Media */}
               <div className="flex justify-center sm:justify-start gap-3 pt-2">
-                <a href="http://wa.me/message/QYOISFIVI4JBB1" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Message us on WhatsApp">
+                <a 
+                  href={settings.footer_whatsapp_contact || 'https://wa.me/2349057775190'} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
+                  aria-label="Message us on WhatsApp"
+                >
                   <i className="fa-brands fa-whatsapp text-base sm:text-lg text-[#25D366] hover:text-[#128C7E] transition-colors duration-300"></i>
                 </a>
-                <a href="https://instagram.com/sho.pwithsky" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Follow us on Instagram">
+                <a 
+                  href={settings.footer_instagram || 'https://instagram.com/shopwithsky'} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
+                  aria-label="Follow us on Instagram"
+                >
                   <i className="fa-brands fa-instagram text-base sm:text-lg text-[#E4405F] hover:text-[#C13584] transition-colors duration-300"></i>
                 </a>
-                <a href="https://tiktok.com/@shopwithsky3" target="_blank" rel="noopener noreferrer" className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Follow us on TikTok">
+                <a 
+                  href={settings.footer_tiktok || 'https://tiktok.com/@shopwithsky'} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="neu-surface p-2 sm:p-3 rounded-lg transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center" 
+                  aria-label="Follow us on TikTok"
+                >
                   <i className="fa-brands fa-tiktok text-base sm:text-lg text-foreground hover:text-foreground transition-colors duration-300"></i>
                 </a>
               </div>
@@ -176,7 +203,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-center sm:text-left">
             <p className="text-xs sm:text-sm text-neu-muted order-2 sm:order-1">
-              © {currentYear} Shop With Sky. All rights reserved.
+              © {currentYear} {settings.footer_copyright_text || 'Shop With Sky. All rights reserved.'}
             </p>
             
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2">

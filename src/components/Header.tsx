@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button';
 import HamburgerMenu from './HamburgerMenu';
 import SearchInput from './SearchInput';
 import ThemeToggle from './ThemeToggle';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.items);
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  const { settings } = useSiteSettings();
 
   return (
     <header className="neu-floating sticky top-0 z-50 w-full px-4 py-2 backdrop-blur-sm">
@@ -35,7 +37,7 @@ const Header = () => {
           </HamburgerMenu>
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
             <img 
-              src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
+              src={settings.site_logo_url || "/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png"} 
               alt="Shop with Sky" 
               className="h-10 w-auto md:h-12 cursor-pointer"
             />

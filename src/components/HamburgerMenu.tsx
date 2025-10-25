@@ -7,6 +7,7 @@ import {
   Bell, Phone, FileText, Truck, Info, LogOut, LogIn
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 import {
   Sheet,
   SheetContent,
@@ -82,6 +83,7 @@ const HamburgerMenu = ({ children, open, onOpenChange }: HamburgerMenuProps) => 
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
+  const { settings } = useSiteSettings();
   
   // TODO: Replace with actual auth state
   const isSignedIn = false; // This should come from your auth context/store
@@ -133,7 +135,7 @@ const HamburgerMenu = ({ children, open, onOpenChange }: HamburgerMenuProps) => 
                   </button>
                 </SheetClose>
                 <img 
-                  src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
+                  src={settings.site_logo_url || "/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png"} 
                   alt="Shop with Sky" 
                   className="h-10 w-auto md:h-12"
                 />
