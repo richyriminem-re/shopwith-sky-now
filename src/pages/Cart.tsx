@@ -23,7 +23,6 @@ import { WhatsAppOrderButton } from '@/components/whatsapp/WhatsAppOrderButton';
 import { Button } from '@/components/ui/button';
 import PageWithNavigation from '@/components/PageWithNavigation';
 import { ShoppingCart } from 'lucide-react';
-import { toast } from 'sonner';
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -134,12 +133,6 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    // Validate shipping method is selected
-    if (!shippingOption) {
-      toast.error('Please select a shipping method before proceeding to checkout');
-      return;
-    }
-    
     // Prevent duplicate checkouts across tabs
     const canProceed = await cartSync.preventDuplicateCheckout();
     if (canProceed) {
@@ -268,9 +261,11 @@ const Cart = () => {
       <div className="px-2 sm:px-4 pb-4 sm:pb-6">
         <div className="text-center">
           <Button 
-            onClick={handleCheckout}
-            disabled={!shippingOption}
-            className="w-full min-h-[48px] sm:min-h-[52px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => {
+              startNavigationTiming();
+              navigate('/checkout-hybrid');
+            }}
+            className="w-full min-h-[48px] sm:min-h-[52px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
             size="lg"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
