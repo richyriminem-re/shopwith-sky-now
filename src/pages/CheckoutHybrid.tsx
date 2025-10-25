@@ -75,7 +75,7 @@ const CheckoutHybrid = () => {
   const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
   const [shippingMethods, setShippingMethods] = useState<any[]>([]);
   const receiptRef = useRef<HTMLDivElement>(null);
-  const { settings } = useSiteSettings();
+  const { settings, loading: settingsLoading } = useSiteSettings();
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -509,11 +509,13 @@ const CheckoutHybrid = () => {
               size="default"
             />
             
-            <img 
-              src={settings.checkout_logo_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png'}
-              alt="Shop with Sky Logo" 
-              className="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-[100px] sm:max-w-[120px] flex-shrink-0"
-            />
+            {!settingsLoading && settings.checkout_logo_url && (
+              <img 
+                src={settings.checkout_logo_url}
+                alt="Shop with Sky Logo" 
+                className="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-[100px] sm:max-w-[120px] flex-shrink-0"
+              />
+            )}
           </div>
           
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center text-balance px-2">
