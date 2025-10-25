@@ -74,7 +74,7 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
           <div className="flex items-center justify-center mb-4">
             <img 
               src={receiptLogoUrl}
-              alt="Shop with Sky Logo" 
+              alt="" 
               className="h-10 sm:h-12 w-auto object-contain"
             />
           </div>
