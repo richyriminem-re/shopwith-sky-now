@@ -49,7 +49,7 @@ export const OrderSummaryMini = forwardRef<HTMLDivElement, OrderSummaryMiniProps
   const [shippingMethodName, setShippingMethodName] = useState('Standard Shipping');
   const [shippingMethodDelivery, setShippingMethodDelivery] = useState('');
   
-  const receiptLogoUrl = settings.receipt_logo_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png';
+  const receiptLogoUrl = settings.receipt_logo_url;
 
   useEffect(() => {
     const loadShippingMethod = async () => {

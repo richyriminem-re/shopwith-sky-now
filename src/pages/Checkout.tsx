@@ -23,6 +23,7 @@ import { PhoneInput } from '@/components/checkout/PhoneInput';
 import { CitySelect } from '@/components/checkout/CitySelect';
 import ShippingMethodComponent from '@/components/cart/ShippingMethod';
 import { OrderSummaryMini } from '@/components/checkout/OrderSummaryMini';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 import { CheckoutErrorBoundary } from '@/components/checkout/ErrorBoundary';
 import type { Address, ShippingMethod } from '@/types';
@@ -48,6 +49,7 @@ const Checkout = () => {
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [freeShippingThreshold, setFreeShippingThreshold] = useState(100000);
   const [shippingMethods, setShippingMethods] = useState<any[]>([]);
+  const { settings, loading: settingsLoading } = useSiteSettings();
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -385,11 +387,13 @@ const Checkout = () => {
               </div>
             </div>
             <div className="flex-shrink-0 self-center xs:self-start order-first xs:order-last">
-              <img 
-                src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
-                alt="Shop with Sky Logo" 
-                className="h-8 xs:h-10 sm:h-12 md:h-14 lg:h-16 w-auto max-w-[120px] xs:max-w-[140px] sm:max-w-[160px] md:max-w-[180px] object-contain mx-auto xs:mx-0"
-              />
+              {!settingsLoading && settings.checkout_logo_url && (
+                <img 
+                  src={settings.checkout_logo_url} 
+                  alt={settings.site_name || "Logo"} 
+                  className="h-8 xs:h-10 sm:h-12 md:h-14 lg:h-16 w-auto max-w-[120px] xs:max-w-[140px] sm:max-w-[160px] md:max-w-[180px] object-contain mx-auto xs:mx-0"
+                />
+              )}
             </div>
           </div>
           <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center break-words leading-tight mt-2 xs:mt-0 w-full">

@@ -13,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state) => state.items);
   const cartItemsCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
-  const { settings } = useSiteSettings();
+  const { settings, loading } = useSiteSettings();
 
   return (
     <header className="neu-floating sticky top-0 z-50 w-full px-4 py-2 backdrop-blur-sm">
@@ -36,11 +36,13 @@ const Header = () => {
             </button>
           </HamburgerMenu>
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <img 
-              src={settings.site_logo_url || "/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png"} 
-              alt="Shop with Sky" 
-              className="h-10 w-auto md:h-12 cursor-pointer"
-            />
+            {!loading && settings.site_logo_url && (
+              <img 
+                src={settings.site_logo_url} 
+                alt={settings.site_name || "Logo"} 
+                className="h-10 w-auto md:h-12 cursor-pointer"
+              />
+            )}
           </Link>
         </div>
 

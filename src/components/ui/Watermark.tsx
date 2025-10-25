@@ -8,7 +8,7 @@ interface WatermarkProps {
 
 export const Watermark: React.FC<WatermarkProps> = ({ className = "", imageUrl }) => {
   const { settings } = useSiteSettings();
-  const watermarkUrl = imageUrl || settings.watermark_image_url || '/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png';
+  const watermarkUrl = imageUrl || settings.watermark_image_url;
 
   return (
     <div 

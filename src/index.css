@@ -436,7 +436,6 @@
     left: calc(-1 * var(--watermark-spacing));
     right: calc(-1 * var(--watermark-spacing));
     bottom: calc(-1 * var(--watermark-spacing));
-    background-image: url('/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png');
     background-size: var(--watermark-size) auto;
     background-repeat: repeat;
     background-position: 
@@ -1458,7 +1457,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png');
   background-size: var(--watermark-size) auto;
   background-repeat: repeat;
   background-position: 0 0, calc(var(--watermark-spacing) / 2) calc(var(--watermark-spacing) / 2);

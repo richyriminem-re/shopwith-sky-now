@@ -16,6 +16,7 @@ import PageWithNavigation from '@/components/PageWithNavigation';
 import BackButton from '@/components/ui/BackButton';
 import { generateOrderReference } from '@/components/order/EnhancedOrderReference';
 import { ErrorBoundaryWithRetry } from '@/components/order/ErrorBoundaryWithRetry';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 interface OrderData {
   name: string;
@@ -33,6 +34,7 @@ const OrderPreview = () => {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
+  const { settings, loading: settingsLoading } = useSiteSettings();
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -266,11 +268,13 @@ const OrderPreview = () => {
               <div className="text-center py-8 px-6 border-b border-border bg-gradient-to-b from-background to-muted/20">
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-6">
-                  <img 
-                    src="/lovable-uploads/e056f700-4487-46d1-967e-39e0eb41e922.png" 
-                    alt="Shop with Sky Logo" 
-                    className="h-14 sm:h-18 w-auto object-contain"
-                  />
+                  {!settingsLoading && settings.receipt_logo_url && (
+                    <img 
+                      src={settings.receipt_logo_url} 
+                      alt={settings.site_name || "Logo"} 
+                      className="h-14 sm:h-18 w-auto object-contain"
+                    />
+                  )}
                 </div>
                 
                 {/* Title */}
