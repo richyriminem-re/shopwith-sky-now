@@ -52,12 +52,16 @@ const ShippingMethod = ({
     }
   }, [shippingMethods, loading, shippingOption, onShippingChange]);
 
-  // Auto-select free shipping when eligible
+  // Auto-select free shipping when eligible, or revert when not eligible
   useEffect(() => {
     if (isEligibleForFreeShipping && shippingOption !== 'free') {
       onShippingChange('free');
+    } else if (!isEligibleForFreeShipping && shippingOption === 'free' && shippingMethods.length > 0) {
+      // Revert to first paid shipping method when no longer eligible
+      const firstMethodId = shippingMethods[0].name.toLowerCase().replace(/\s+/g, '-');
+      onShippingChange(firstMethodId);
     }
-  }, [isEligibleForFreeShipping, shippingOption, onShippingChange]);
+  }, [isEligibleForFreeShipping, shippingOption, shippingMethods, onShippingChange]);
 
   if (loading) {
     return (
