@@ -28,6 +28,7 @@ interface Product {
   brand: string | null;
   featured: boolean;
   created_at: string;
+  image_url?: string | null;
 }
 
 const AdminProducts = () => {
@@ -48,11 +49,22 @@ const AdminProducts = () => {
       const db = supabase as any;
       const { data, error } = await db
         .from('products')
-        .select('*')
+        .select(`
+          *,
+          product_images(image_url, sort_order)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProducts(data || []);
+      
+      // Transform data to include the first image
+      const productsWithImages = data?.map((product: any) => ({
+        ...product,
+        image_url: product.product_images?.[0]?.image_url || null,
+        product_images: undefined, // Remove the nested array
+      })) || [];
+      
+      setProducts(productsWithImages);
     } catch (error: any) {
       toast({
         title: 'Error loading products',
@@ -219,20 +231,38 @@ const AdminProducts = () => {
               <Card key={product.id}>
                 <CardContent className="p-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg truncate">
-                        {product.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {product.primary_category} {product.subcategory && `• ${product.subcategory}`}
-                      </p>
-                      {product.brand && (
-                        <p className="text-sm text-muted-foreground">
-                          Brand: {product.brand}
-                        </p>
+                    {/* Product Image */}
+                    <div className="flex gap-4 flex-1 min-w-0">
+                      {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt={product.title}
+                          className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Package className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+                        </div>
                       )}
+                      
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-lg truncate">
+                          {product.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {product.primary_category} {product.subcategory && `• ${product.subcategory}`}
+                        </p>
+                        {product.brand && (
+                          <p className="text-sm text-muted-foreground">
+                            Brand: {product.brand}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex gap-2">
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 self-end sm:self-center">
                       <Button 
                         variant="outline" 
                         size="sm"
