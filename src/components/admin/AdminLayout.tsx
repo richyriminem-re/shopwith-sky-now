@@ -136,8 +136,8 @@ const AdminLayout = () => {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:flex lg:flex-col lg:w-64 border-r min-h-screen">
-          <div className="p-6">
+        <aside className="hidden lg:flex lg:flex-col lg:w-64 border-r h-screen sticky top-0">
+          <div className="p-6 flex flex-col h-full overflow-y-auto">
             <div className="flex items-center gap-2 mb-8">
               <Package className="h-6 w-6" />
               <span className="text-xl font-bold">Admin</span>
