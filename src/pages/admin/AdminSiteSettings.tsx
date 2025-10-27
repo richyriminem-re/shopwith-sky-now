@@ -475,6 +475,30 @@ const AdminSiteSettings = () => {
               </Button>
             </div>
           </div>
+
+          {/* WhatsApp Link Preview */}
+          <div className="mt-6 p-4 border rounded-lg bg-muted/50 space-y-3">
+            <Label className="text-sm font-semibold">WhatsApp Link Preview</Label>
+            <p className="text-sm text-muted-foreground">
+              This is the link that will be generated when customers click "Continue with WhatsApp"
+            </p>
+            <div className="flex items-start gap-2 p-3 bg-background border rounded-md">
+              <div className="flex-1 break-all text-sm font-mono text-muted-foreground">
+                {`https://api.whatsapp.com/send/?phone=${settings.whatsapp_business_number || '2348112698594'}&text=${encodeURIComponent(settings.whatsapp_order_message || "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process.")}&type=phone_number&app_absent=0`}
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                const url = `https://api.whatsapp.com/send/?phone=${settings.whatsapp_business_number || '2348112698594'}&text=${encodeURIComponent(settings.whatsapp_order_message || "Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process.")}&type=phone_number&app_absent=0`;
+                window.open(url, '_blank');
+              }}
+            >
+              Test WhatsApp Link
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
