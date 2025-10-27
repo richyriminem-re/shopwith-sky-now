@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Upload, X, GripVertical } from "lucide-react";
+import { Upload, X, GripVertical, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -19,6 +20,8 @@ interface ImageUploaderProps {
 
 export function ImageUploader({ images, onChange }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [addingUrl, setAddingUrl] = useState(false);
   const { toast } = useToast();
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +119,64 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
     onChange(reindexed);
   };
 
+  const handleAddFromUrl = async () => {
+    if (!imageUrl.trim()) {
+      toast({
+        title: "URL required",
+        description: "Please enter an image URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const maxFiles = 10;
+    if (images.length >= maxFiles) {
+      toast({
+        title: "Too many images",
+        description: `Maximum ${maxFiles} images allowed`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setAddingUrl(true);
+
+    try {
+      // Validate if URL is accessible
+      const response = await fetch(imageUrl, { method: 'HEAD' });
+      if (!response.ok) {
+        throw new Error("Unable to access image URL");
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.startsWith('image/')) {
+        throw new Error("URL does not point to an image");
+      }
+
+      const newImage: ImageData = {
+        url: imageUrl,
+        alt_text: "",
+        sort_order: images.length,
+      };
+
+      onChange([...images, newImage]);
+      setImageUrl("");
+
+      toast({
+        title: "Success",
+        description: "Image added from URL",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Failed to add image",
+        description: error.message || "Invalid image URL",
+        variant: "destructive",
+      });
+    } finally {
+      setAddingUrl(false);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -125,27 +186,77 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
         </p>
       </div>
 
-      {/* Upload Zone */}
-      <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
-        <Input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileSelect}
-          disabled={uploading || images.length >= 10}
-          className="hidden"
-          id="image-upload"
-        />
-        <label htmlFor="image-upload" className="cursor-pointer">
-          <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
-          <p className="text-sm font-medium">
-            {uploading ? "Uploading..." : "Click to upload images"}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            JPG, PNG, WEBP up to 5MB each
-          </p>
-        </label>
-      </div>
+      {/* Upload Options */}
+      <Tabs defaultValue="file" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="file">
+            <Upload className="h-4 w-4 mr-2" />
+            Upload File
+          </TabsTrigger>
+          <TabsTrigger value="url">
+            <LinkIcon className="h-4 w-4 mr-2" />
+            From URL
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="file" className="mt-4">
+          <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileSelect}
+              disabled={uploading || images.length >= 10}
+              className="hidden"
+              id="image-upload"
+            />
+            <label htmlFor="image-upload" className="cursor-pointer">
+              <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-2" />
+              <p className="text-sm font-medium">
+                {uploading ? "Uploading..." : "Click to upload images"}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                JPG, PNG, WEBP up to 5MB each
+              </p>
+            </label>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="url" className="mt-4">
+          <div className="border-2 border-dashed rounded-lg p-6">
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="image-url">Image URL</Label>
+                <Input
+                  id="image-url"
+                  type="url"
+                  placeholder="https://example.com/image.jpg"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  disabled={addingUrl || images.length >= 10}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddFromUrl();
+                    }
+                  }}
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={handleAddFromUrl}
+                disabled={addingUrl || !imageUrl.trim() || images.length >= 10}
+                className="w-full"
+              >
+                {addingUrl ? "Adding..." : "Add Image from URL"}
+              </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Enter a direct link to an image (JPG, PNG, WEBP, etc.)
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       {/* Image Preview Grid */}
       {images.length > 0 && (
