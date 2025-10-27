@@ -207,12 +207,12 @@ const Footer = () => {
             </p>
             
             <div className="flex items-center gap-4 sm:gap-6 order-1 sm:order-2">
-              <Link to="/privacy" className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2">
+              <span className="text-xs sm:text-sm text-neu-muted touch-manipulation py-2">
                 Privacy
-              </Link>
-              <Link to="/terms" className="text-xs sm:text-sm text-neu-muted hover:text-primary transition-colors touch-manipulation py-2">
+              </span>
+              <span className="text-xs sm:text-sm text-neu-muted touch-manipulation py-2">
                 Terms
-              </Link>
+              </span>
             </div>
           </div>
         </div>
