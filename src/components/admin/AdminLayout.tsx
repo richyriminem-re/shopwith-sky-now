@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { useAdminStore } from '@/lib/adminStore';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Package, LogOut, Home, Truck, Settings, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ThemeToggle';
+import { useToast } from '@/hooks/use-toast';
 const AdminLayout = () => {
   const {
     isAuthenticated,
@@ -16,6 +17,63 @@ const AdminLayout = () => {
     setSidebarOpen
   } = useAdminStore();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastActivityRef = useRef<number>(Date.now());
+
+  // Auto-logout after 30 minutes of inactivity
+  useEffect(() => {
+    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+    const WARNING_TIME = 29 * 60 * 1000; // Show warning at 29 minutes
+
+    const resetInactivityTimer = () => {
+      lastActivityRef.current = Date.now();
+      
+      // Clear existing timer
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+
+      // Set warning timer
+      const warningTimer = setTimeout(() => {
+        toast({
+          title: "Session Expiring",
+          description: "You will be logged out in 1 minute due to inactivity.",
+          variant: "destructive",
+        });
+      }, WARNING_TIME);
+
+      // Set logout timer
+      inactivityTimerRef.current = setTimeout(async () => {
+        toast({
+          title: "Session Expired",
+          description: "You have been logged out due to inactivity.",
+        });
+        await logout();
+        navigate('/admin/login');
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    // Track user activity
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    activityEvents.forEach(event => {
+      document.addEventListener(event, resetInactivityTimer);
+    });
+
+    // Initialize timer
+    resetInactivityTimer();
+
+    return () => {
+      // Cleanup
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+      activityEvents.forEach(event => {
+        document.removeEventListener(event, resetInactivityTimer);
+      });
+    };
+  }, [logout, navigate, toast]);
+
   useEffect(() => {
     // Set up auth state listener
     const {
