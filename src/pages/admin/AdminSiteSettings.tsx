@@ -49,6 +49,31 @@ const AdminSiteSettings = () => {
     }
   };
 
+  const handleSaveWhatsAppSettings = async () => {
+    setSaving('whatsapp_settings');
+    try {
+      await Promise.all([
+        updateSiteSetting('whatsapp_business_number', settings.whatsapp_business_number || ''),
+        updateSiteSetting('whatsapp_order_message', settings.whatsapp_order_message || '')
+      ]);
+      clearSiteSettingsCache();
+      window.dispatchEvent(new Event('site-settings-updated'));
+      toast({
+        title: 'Success',
+        description: 'WhatsApp settings updated successfully',
+      });
+      await loadSettings();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update WhatsApp settings',
+        variant: 'destructive',
+      });
+    } finally {
+      setSaving(null);
+    }
+  };
+
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -438,20 +463,12 @@ const AdminSiteSettings = () => {
             <p className="text-sm text-muted-foreground">
               Enter the number without spaces or special characters (e.g., 2348112698594)
             </p>
-            <div className="flex gap-2">
-              <Input
-                id="whatsapp_business_number"
-                value={settings.whatsapp_business_number || ''}
-                onChange={(e) => setSettings({ ...settings, whatsapp_business_number: e.target.value })}
-                placeholder="2348112698594"
-              />
-              <Button
-                onClick={() => handleUpdate('whatsapp_business_number', settings.whatsapp_business_number)}
-                disabled={saving === 'whatsapp_business_number'}
-              >
-                {saving === 'whatsapp_business_number' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
-              </Button>
-            </div>
+            <Input
+              id="whatsapp_business_number"
+              value={settings.whatsapp_business_number || ''}
+              onChange={(e) => setSettings({ ...settings, whatsapp_business_number: e.target.value })}
+              placeholder="2348112698594"
+            />
           </div>
 
           <div className="space-y-2">
@@ -459,22 +476,22 @@ const AdminSiteSettings = () => {
             <p className="text-sm text-muted-foreground">
               Pre-written message customers will send when placing an order via WhatsApp
             </p>
-            <div className="flex gap-2">
-              <Textarea
-                id="whatsapp_order_message"
-                value={settings.whatsapp_order_message || ''}
-                onChange={(e) => setSettings({ ...settings, whatsapp_order_message: e.target.value })}
-                placeholder="Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process."
-                rows={3}
-              />
-              <Button
-                onClick={() => handleUpdate('whatsapp_order_message', settings.whatsapp_order_message)}
-                disabled={saving === 'whatsapp_order_message'}
-              >
-                {saving === 'whatsapp_order_message' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
-              </Button>
-            </div>
+            <Textarea
+              id="whatsapp_order_message"
+              value={settings.whatsapp_order_message || ''}
+              onChange={(e) => setSettings({ ...settings, whatsapp_order_message: e.target.value })}
+              placeholder="Hi Shop With Sky 👋 I've placed an order. Please see my receipt and guide me on the payment process."
+              rows={3}
+            />
           </div>
+
+          <Button
+            onClick={handleSaveWhatsAppSettings}
+            disabled={saving === 'whatsapp_settings'}
+            className="w-full"
+          >
+            {saving === 'whatsapp_settings' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save WhatsApp Settings'}
+          </Button>
 
           {/* WhatsApp Link Preview */}
           <div className="mt-6 p-4 border rounded-lg bg-muted/50 space-y-3">
