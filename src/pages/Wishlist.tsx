@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Heart, Trash2, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore, useCartStore } from '@/lib/store';
 import { useAccountPagePreloading } from '@/hooks/useDeepPagePreloading';
-import { products } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { LoadingErrorBoundary } from '@/components/LoadingErrorBoundary';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
+import type { Product } from '@/types';
 
 const Wishlist = () => {
   const navigate = useNavigate();
+  const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   // Deep page preloading for account-related routes
   useAccountPagePreloading();
 
@@ -23,12 +22,74 @@ const Wishlist = () => {
   const { addItem } = useCartStore();
   const { toast } = useToast();
 
-  const wishlistProducts = products.filter(product => 
-    wishlist.includes(product.id)
-  );
+  // Fetch wishlist products from Supabase
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    const fetchWishlistProducts = async () => {
+      if (wishlist.length === 0) {
+        setWishlistProducts([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('products')
+          .select(`
+            *,
+            product_images(image_url, alt_text, sort_order),
+            product_variants(id, sku, color, size, price, compare_price, stock)
+          `)
+          .in('id', wishlist)
+          .eq('is_active', true);
+
+        if (error) throw error;
+
+        // Transform data to match Product type
+        const products = data?.map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          handle: p.handle,
+          description: p.description || '',
+          primaryCategory: p.primary_category,
+          subcategory: p.subcategory,
+          images: (p.product_images || [])
+            .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+            .map((img: any) => img.image_url),
+          brand: p.brand || undefined,
+          tags: p.tags || undefined,
+          variants: (p.product_variants || []).map((v: any) => ({
+            id: v.id,
+            sku: v.sku,
+            size: v.size || undefined,
+            color: v.color || undefined,
+            price: Number(v.price),
+            comparePrice: v.compare_price ? Number(v.compare_price) : undefined,
+            stock: v.stock,
+          })),
+          featured: p.featured || false,
+        })) || [];
+
+        setWishlistProducts(products);
+      } catch (error) {
+        console.error('Error fetching wishlist products:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load wishlist products',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWishlistProducts();
+  }, [wishlist, toast]);
 
   const handleAddToCart = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+    const product = wishlistProducts.find(p => p.id === productId);
     if (product && product.variants.length > 0) {
       // Add the first available variant to cart
       const variant = product.variants.find(v => v.stock > 0);
@@ -53,6 +114,16 @@ const Wishlist = () => {
       description: "Item has been removed from your wishlist.",
     });
   };
+
+  if (loading) {
+    return (
+      <LoadingErrorBoundary>
+        <div className="pb-20 pb-safe min-h-screen flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </LoadingErrorBoundary>
+    );
+  }
 
   if (wishlistProducts.length === 0) {
     return (
