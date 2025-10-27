@@ -1,8 +1,10 @@
 import React from 'react';
 import { MapPin, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const ContactStoreInfo = () => {
+  const { settings } = useSiteSettings();
   return (
     <section className="px-4 mb-8">
       <Card className="neu-card">
@@ -21,9 +23,9 @@ const ContactStoreInfo = () => {
                   <div>
                     <h4 className="font-medium text-foreground mb-2">Address</h4>
                     <p className="text-muted-foreground leading-relaxed">
-                      Shop With Sky<br />
-                      Akogun Street, Olodi Apapa<br />
-                      Lagos, Nigeria
+                      {settings.contact_store_name || 'Shop With Sky'}<br />
+                      {settings.contact_store_address_line1 || 'Akogun Street, Olodi Apapa'}<br />
+                      {settings.contact_store_address_line2 || 'Lagos, Nigeria'}
                     </p>
                   </div>
                 </div>
@@ -40,11 +42,11 @@ const ContactStoreInfo = () => {
                     <div className="text-muted-foreground space-y-3">
                       <div className="flex flex-col xs:flex-row xs:justify-between gap-1 xs:gap-2 p-2 sm:p-0 bg-background/50 sm:bg-transparent rounded-lg sm:rounded-none">
                         <span className="text-sm sm:text-base font-medium xs:font-normal">Monday - Saturday:</span>
-                        <span className="text-sm sm:text-base font-semibold">08:00 AM - 7:00 PM</span>
+                        <span className="text-sm sm:text-base font-semibold">{settings.contact_store_weekday_hours || '08:00 AM - 7:00 PM'}</span>
                       </div>
                       <div className="flex flex-col xs:flex-row xs:justify-between gap-1 xs:gap-2 p-2 sm:p-0 bg-background/50 sm:bg-transparent rounded-lg sm:rounded-none">
                         <span className="text-sm sm:text-base font-medium xs:font-normal">Sunday:</span>
-                        <span className="text-sm sm:text-base font-semibold">12:00 PM - 5:00 PM</span>
+                        <span className="text-sm sm:text-base font-semibold">{settings.contact_store_sunday_hours || '12:00 PM - 5:00 PM'}</span>
                       </div>
                     </div>
                   </div>

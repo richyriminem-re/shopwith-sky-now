@@ -13,12 +13,12 @@ const ContactMethods = () => {
   const contactMethods = [
     {
       icon: Phone,
-      title: 'Connect on WhatsApp',
-      description: 'Message or Call us directly on WhatsApp',
-      availability: '⏰ Mon-Sat 8AM-7PM, Sun 12PM-5PM',
-      action: '💬 Connect on WhatsApp',
+      title: settings.contact_whatsapp_title || 'Connect on WhatsApp',
+      description: settings.contact_whatsapp_description || 'Message or Call us directly on WhatsApp',
+      availability: settings.contact_whatsapp_availability || '⏰ Mon-Sat 8AM-7PM, Sun 12PM-5PM',
+      action: settings.contact_whatsapp_action || '💬 Connect on WhatsApp',
       highlight: true,
-      contact: '📞 +234 811 269 8594',
+      contact: settings.contact_whatsapp_contact || '📞 +234 811 269 8594',
       onClick: () => window.open(`https://wa.me/${whatsappNumber}`, '_blank')
     }
   ];

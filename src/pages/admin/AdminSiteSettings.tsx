@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { getAllSiteSettings, updateSiteSetting, clearSiteSettingsCache } from '@/lib/siteSettings';
 import { supabase } from '@/integrations/supabase/client';
@@ -623,6 +624,157 @@ const AdminSiteSettings = () => {
                 {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
               </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Contact Page Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Contact Page Settings</CardTitle>
+          <CardDescription>Customize the contact page content</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* WhatsApp Contact Card */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">WhatsApp Contact Card</h3>
+            
+            <div className="space-y-2">
+              <Label htmlFor="contact_whatsapp_title">Card Title</Label>
+              <Input
+                id="contact_whatsapp_title"
+                value={settings.contact_whatsapp_title || ''}
+                onChange={(e) => setSettings({ ...settings, contact_whatsapp_title: e.target.value })}
+                placeholder="Connect on WhatsApp"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_whatsapp_description">Description</Label>
+              <Input
+                id="contact_whatsapp_description"
+                value={settings.contact_whatsapp_description || ''}
+                onChange={(e) => setSettings({ ...settings, contact_whatsapp_description: e.target.value })}
+                placeholder="Message or Call us directly on WhatsApp"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_whatsapp_availability">Availability Hours</Label>
+              <Input
+                id="contact_whatsapp_availability"
+                value={settings.contact_whatsapp_availability || ''}
+                onChange={(e) => setSettings({ ...settings, contact_whatsapp_availability: e.target.value })}
+                placeholder="⏰ Mon-Sat 8AM-7PM, Sun 12PM-5PM"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_whatsapp_action">Action Button Text</Label>
+              <Input
+                id="contact_whatsapp_action"
+                value={settings.contact_whatsapp_action || ''}
+                onChange={(e) => setSettings({ ...settings, contact_whatsapp_action: e.target.value })}
+                placeholder="💬 Connect on WhatsApp"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_whatsapp_contact">Contact Display</Label>
+              <Input
+                id="contact_whatsapp_contact"
+                value={settings.contact_whatsapp_contact || ''}
+                onChange={(e) => setSettings({ ...settings, contact_whatsapp_contact: e.target.value })}
+                placeholder="📞 +234 811 269 8594"
+              />
+            </div>
+
+            <Button
+              onClick={async () => {
+                await handleUpdate('contact_whatsapp_title', settings.contact_whatsapp_title || '');
+                await handleUpdate('contact_whatsapp_description', settings.contact_whatsapp_description || '');
+                await handleUpdate('contact_whatsapp_availability', settings.contact_whatsapp_availability || '');
+                await handleUpdate('contact_whatsapp_action', settings.contact_whatsapp_action || '');
+                await handleUpdate('contact_whatsapp_contact', settings.contact_whatsapp_contact || '');
+              }}
+              disabled={!!saving}
+              className="w-full"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Save WhatsApp Card
+            </Button>
+          </div>
+
+          <Separator />
+
+          {/* Store Information Card */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Store Information Card</h3>
+            
+            <div className="space-y-2">
+              <Label htmlFor="contact_store_name">Store Name</Label>
+              <Input
+                id="contact_store_name"
+                value={settings.contact_store_name || ''}
+                onChange={(e) => setSettings({ ...settings, contact_store_name: e.target.value })}
+                placeholder="Shop With Sky"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_store_address_line1">Address Line 1</Label>
+              <Input
+                id="contact_store_address_line1"
+                value={settings.contact_store_address_line1 || ''}
+                onChange={(e) => setSettings({ ...settings, contact_store_address_line1: e.target.value })}
+                placeholder="Akogun Street, Olodi Apapa"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_store_address_line2">Address Line 2</Label>
+              <Input
+                id="contact_store_address_line2"
+                value={settings.contact_store_address_line2 || ''}
+                onChange={(e) => setSettings({ ...settings, contact_store_address_line2: e.target.value })}
+                placeholder="Lagos, Nigeria"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_store_weekday_hours">Weekday Hours (Mon-Sat)</Label>
+              <Input
+                id="contact_store_weekday_hours"
+                value={settings.contact_store_weekday_hours || ''}
+                onChange={(e) => setSettings({ ...settings, contact_store_weekday_hours: e.target.value })}
+                placeholder="08:00 AM - 7:00 PM"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="contact_store_sunday_hours">Sunday Hours</Label>
+              <Input
+                id="contact_store_sunday_hours"
+                value={settings.contact_store_sunday_hours || ''}
+                onChange={(e) => setSettings({ ...settings, contact_store_sunday_hours: e.target.value })}
+                placeholder="12:00 PM - 5:00 PM"
+              />
+            </div>
+
+            <Button
+              onClick={async () => {
+                await handleUpdate('contact_store_name', settings.contact_store_name || '');
+                await handleUpdate('contact_store_address_line1', settings.contact_store_address_line1 || '');
+                await handleUpdate('contact_store_address_line2', settings.contact_store_address_line2 || '');
+                await handleUpdate('contact_store_weekday_hours', settings.contact_store_weekday_hours || '');
+                await handleUpdate('contact_store_sunday_hours', settings.contact_store_sunday_hours || '');
+              }}
+              disabled={!!saving}
+              className="w-full"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Save Store Information
+            </Button>
           </div>
         </CardContent>
       </Card>
