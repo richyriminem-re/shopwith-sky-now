@@ -2,8 +2,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageCircle, Instagram, Music } from 'lucide-react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const ContactUpdates = () => {
+  const { settings } = useSiteSettings();
   return (
     <section className="px-4 mb-8">
       <Card className="neu-card">
@@ -20,7 +22,7 @@ const ContactUpdates = () => {
         <CardContent className="space-y-4">
           {/* WhatsApp Group Button */}
           <Button 
-            onClick={() => window.open('http://chat.whatsapp.com/FPRjd2q6mu9Kpjpx7rJc0Q', '_blank')}
+            onClick={() => window.open(settings.footer_whatsapp_group || 'https://chat.whatsapp.com/your-group-link', '_blank')}
             className="w-full min-h-[48px] sm:min-h-[52px] touch-manipulation bg-[#25D366] hover:bg-[#25D366]/90 text-white text-base font-medium"
             aria-label="Join WhatsApp Group"
           >
@@ -35,7 +37,7 @@ const ContactUpdates = () => {
             </p>
             <div className="flex justify-center gap-4">
               <a 
-                href="http://wa.me/message/QYOISFIVI4JBB1" 
+                href={settings.footer_whatsapp_contact || 'https://wa.me/2349057775190'} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="neu-surface p-3 sm:p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-[#25D366]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[48px] min-w-[48px] flex items-center justify-center group" 
@@ -45,7 +47,7 @@ const ContactUpdates = () => {
               </a>
               
               <a 
-                href="https://instagram.com/sho.pwithsky" 
+                href={settings.footer_instagram || 'https://instagram.com/shopwithsky'} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="neu-surface p-3 sm:p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-[#E4405F]/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[48px] min-w-[48px] flex items-center justify-center group" 
@@ -55,7 +57,7 @@ const ContactUpdates = () => {
               </a>
               
               <a 
-                href="https://tiktok.com/@shopwithsky3" 
+                href={settings.footer_tiktok || 'https://tiktok.com/@shopwithsky'} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="neu-surface p-3 sm:p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary/20 touch-manipulation min-h-[48px] min-w-[48px] flex items-center justify-center group" 
