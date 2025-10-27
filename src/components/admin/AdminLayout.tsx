@@ -4,7 +4,7 @@ import { useAdminStore } from '@/lib/adminStore';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package, LogOut, Home, Truck, Settings } from 'lucide-react';
+import { Menu, Package, LogOut, Home, Truck, Settings, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ThemeToggle';
 const AdminLayout = () => {
@@ -81,6 +81,14 @@ const AdminLayout = () => {
     }}>
         <Truck className="h-5 w-5" />
         Shipping & Promos
+      </Button>
+
+      <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => {
+      navigate('/admin/faqs');
+      if (mobile) setSidebarOpen(false);
+    }}>
+        <HelpCircle className="h-5 w-5" />
+        FAQs
       </Button>
 
       <Button variant="ghost" className="w-full justify-start gap-3" onClick={() => {

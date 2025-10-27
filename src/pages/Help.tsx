@@ -1,37 +1,48 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import SEOHead from '@/components/SEOHead';
 import PageWithNavigation from '@/components/PageWithNavigation';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
+
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  display_order: number;
+  is_active: boolean;
+}
 
 const Help = () => {
   const navigate = useNavigate();
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [loading, setLoading] = useState(true);
   
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
+    loadFAQs();
   }, []);
 
-  const faqs = [
-    {
-      question: "How does WhatsApp ordering work?",
-      answer: "Simply add items to your cart and click 'Order via WhatsApp'. You'll be redirected to our WhatsApp Business where our team will guide you through payment options (bank transfer, card payment, or cash on delivery) and confirm your delivery details."
-    },
-    {
-      question: "What are your delivery options within Nigeria?",
-      answer: "We deliver nationwide across Nigeria. Lagos and Abuja: 1-2 business days. Other major cities: 2-4 business days. Remote areas: 3-7 business days. Same-day delivery available in Lagos Island, Victoria Island, and Ikoyi for orders placed before 2 PM."
-    },
-    {
-      question: "Are your products authentic and high quality?",
-      answer: "Absolutely! All our fashion and beauty products are 100% authentic and sourced directly from verified suppliers. We provide quality guarantees and detailed product descriptions with actual photos. Every item goes through quality control before shipping."
-    },
-    {
-      question: "What is your return and exchange policy?",
-      answer: "We offer 7-day returns for unworn items with original tags. Size exchanges are free within Lagos and Abuja - we'll pick up and deliver the new size. For other locations, customers cover return shipping. Contact us via WhatsApp to initiate returns or exchanges."
+  const loadFAQs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      setFaqs(data || []);
+    } catch (error) {
+      console.error('Error loading FAQs:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <PageWithNavigation fallbackRoute="/">
@@ -59,18 +70,28 @@ const Help = () => {
 
         {/* FAQ Accordion */}
         <div className="px-3 sm:px-4 lg:px-6 max-w-4xl mx-auto mb-6 sm:mb-8 lg:mb-10">
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="neu-surface mb-3 sm:mb-4 rounded-xl border-0">
-                <AccordionTrigger className="px-4 sm:px-6 py-3 sm:py-4 text-left hover:no-underline text-sm sm:text-base font-medium">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm lg:text-base text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : faqs.length === 0 ? (
+            <div className="neu-surface p-8 rounded-xl text-center">
+              <p className="text-muted-foreground">No FAQs available at the moment.</p>
+            </div>
+          ) : (
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq) => (
+                <AccordionItem key={faq.id} value={faq.id} className="neu-surface mb-3 sm:mb-4 rounded-xl border-0">
+                  <AccordionTrigger className="px-4 sm:px-6 py-3 sm:py-4 text-left hover:no-underline text-sm sm:text-base font-medium">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm lg:text-base text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
         </div>
 
         {/* Quick Actions */}
